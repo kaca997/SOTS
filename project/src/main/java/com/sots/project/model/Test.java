@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -25,14 +26,19 @@ public class Test {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "test_id")
 	private List<Question> questions;
-
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="teacher_id")
+	private Teacher teacher;
+	
 	public Test() {
 		super();
 	}
 
-	public Test(List<Question> questions) {
+	public Test(List<Question> questions, Teacher teacher) {
 		super();
 		this.questions = questions;
+		this.teacher = teacher;
 	}
 
 	public Long getId() {
@@ -50,5 +56,12 @@ public class Test {
 	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
-	
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
 }
