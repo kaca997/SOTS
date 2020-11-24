@@ -1,0 +1,9 @@
+label {
+    font-size: 130%;
+  }
+
+input.largerCheckbox { 
+    transform : scale(3); 
+    margin-top: 38px;
+    margin-left: -70px;
+} 

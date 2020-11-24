@@ -12,18 +12,20 @@ export const AppRoutes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'new-test',
     pathMatch: 'full',
-  }, {
+  }, 
+  {
     path: '',
     component: AdminLayoutComponent,
     children: [
         {
       path: '',
       loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
-  }]},
+  }]
+},
   {
     path: '**',
-    redirectTo: 'dashboard'
+    redirectTo: 'new-test'
   }
 ]

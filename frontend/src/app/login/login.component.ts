@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 				//console.log(jwt.decodeToken(result));
 				let info = jwt.decodeToken(result)
 				console.log(info);
-				this.router.navigate(['dashboard'])
+				this.router.navigate(['new-test'])
 			},
 			error => {
 				console.log(error);
