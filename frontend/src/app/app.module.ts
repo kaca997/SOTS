@@ -4,9 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ToastrModule } from "ngx-toastr";
 
 import { SidebarModule } from './sidebar/sidebar.module';
-import { FooterModule } from './shared/footer/footer.module';
 import { NavbarModule} from './shared/navbar/navbar.module';
-import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
 
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
@@ -18,13 +16,15 @@ import { Interceptor } from './interceptors/intercept.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './core/material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { NewTestComponent } from './pages/new-test/new-test.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    LoginComponent
+    LoginComponent,
+    NewTestComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -38,9 +38,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     }),
     SidebarModule,
     NavbarModule,
-    ToastrModule.forRoot(),
-    FooterModule,
-    FixedPluginModule
+    ToastrModule.forRoot()
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }],
   bootstrap: [AppComponent]
