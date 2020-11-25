@@ -22,25 +22,19 @@ public class Answer {
 	@Column(name = "correct")
 	private boolean correct;
 	
-	@Column(name = "selected")
-	private boolean selected;
-
 	public Answer() {
-		this.selected = false;
 	}
 
 	public Answer(String text, boolean correct, boolean selected) {
 		super();
 		this.text = text;
 		this.correct = correct;
-		this.selected = selected;
 	}
 
 	public Answer(String text, boolean correct) {
 		super();
 		this.text = text;
 		this.correct = correct;
-		this.selected = false;
 	}
 
 	public Long getId() {
@@ -65,14 +59,6 @@ public class Answer {
 
 	public void setCorrect(boolean correct) {
 		this.correct = correct;
-	}
-
-	public boolean isSelected() {
-		return selected;
-	}
-
-	public void setSelected(boolean selected) {
-		this.selected = selected;
 	}
 	
 }
