@@ -68,9 +68,11 @@ export class NewTestComponent implements OnInit {
     let test = {
       questions: this.questions
     }
+    console.log(JSON.stringify(test));
     this.testService.createTest(test).subscribe(
 			result => {
         console.log(result)
+        console.log(JSON.stringify(result));
         this.toastr.success('Successfully added.');
 			},
 			error => {
