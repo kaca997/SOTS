@@ -23,21 +23,31 @@ public class Test {
 	@Column(name = "id")
 	private Long id;
 	
+	@Column(name = "title")
+	private String title;
+	
+	@Column(name = "active")
+	private Boolean active;
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "test_id")
-	private List<Question> questions;
+	private List<Section> sections;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="teacher_id")
 	private Teacher teacher;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "course_id")
+	private Course course;
+	
 	public Test() {
 		super();
 	}
 
-	public Test(List<Question> questions, Teacher teacher) {
+	public Test(List<Section> sections, Teacher teacher) {
 		super();
-		this.questions = questions;
+		this.sections = sections;
 		this.teacher = teacher;
 	}
 
@@ -49,12 +59,12 @@ public class Test {
 		this.id = id;
 	}
 
-	public List<Question> getQuestions() {
-		return questions;
+	public List<Section> getSections() {
+		return sections;
 	}
 
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
+	public void setSections(List<Section> sections) {
+		this.sections = sections;
 	}
 
 	public Teacher getTeacher() {
@@ -64,4 +74,29 @@ public class Test {
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
 	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+	
 }

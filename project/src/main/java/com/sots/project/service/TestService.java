@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sots.project.dto.UpdateTestDTO;
 import com.sots.project.model.Answer;
 import com.sots.project.model.Question;
+import com.sots.project.model.Section;
 import com.sots.project.model.Teacher;
 import com.sots.project.model.Test;
 import com.sots.project.repository.TestRepository;
@@ -22,26 +23,29 @@ public class TestService {
 
 	public Test save(Test test) throws InvalidDataException{
 		
-		if (test.getQuestions().size() == 0) {
-			throw new InvalidDataException("There are no questions in the test. Please add them.");
-		}
-		
-		for (Question q: test.getQuestions()) {
-			if (q.getText().equals("")) {
-				throw new InvalidDataException("There mustn't be questions that do not have text.");
+		for (Section section: test.getSections()) {
+			
+			if (section.getQuestions().size() == 0) {
+				throw new InvalidDataException("There are no questions in the section. Please add them.");
 			}
-			if (q.getAnswers().size() == 0) {
-				throw new InvalidDataException("There mustn't be questions that do not have any answers offered.");
-			}
-			boolean corrAnsw = false;
-			for (Answer a : q.getAnswers()) {
-				if (a.isCorrect()) {
-					corrAnsw = true;
-					break;
+			
+			for (Question q: section.getQuestions()) {
+				if (q.getText().equals("")) {
+					throw new InvalidDataException("There mustn't be questions that do not have text.");
 				}
-			}
-			if (!corrAnsw) {
-				throw new InvalidDataException("There mustn't be questions that do not have correct answer.");
+				if (q.getAnswers().size() == 0) {
+					throw new InvalidDataException("There mustn't be questions that do not have any answers offered.");
+				}
+				boolean corrAnsw = false;
+				for (Answer a : q.getAnswers()) {
+					if (a.isCorrect()) {
+						corrAnsw = true;
+						break;
+					}
+				}
+				if (!corrAnsw) {
+					throw new InvalidDataException("There mustn't be questions that do not have correct answer.");
+				}
 			}
 		}
 		
@@ -84,7 +88,7 @@ public class TestService {
 			throw new InvalidDataException("This test does not exist!");
 		}
 		
-		t.setQuestions(dto.getQuestions());
+		//t.setQuestions(dto.getQuestions());
 		Test updated = testRepository.save(t);
 		return updated;
 	}
