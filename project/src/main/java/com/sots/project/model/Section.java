@@ -10,39 +10,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "done_test")
-public class DoneTest {
+@Table(name = "section")
+public class Section {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="test_id")
-	private Test test;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="student_id")
-	private Student student;
+	@Column(name = "section_title")
+	private String sectionTitle;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "done_test_id")
-	private List<Answer> chosenAnswers;
+	@JoinColumn(name = "section_id")
+	private List<Question> questions;
 
-	public DoneTest() {
+	public Section() {
 		super();
 	}
 
-	public DoneTest(Test test, Student student) {
+	public Section(Long id, String sectionTitle, List<Question> questions) {
 		super();
-		this.test = test;
-		this.student = student;
+		this.id = id;
+		this.sectionTitle = sectionTitle;
+		this.questions = questions;
 	}
 
 	public Long getId() {
@@ -53,20 +48,20 @@ public class DoneTest {
 		this.id = id;
 	}
 
-	public Test getTest() {
-		return test;
+	public String getSectionTitle() {
+		return sectionTitle;
 	}
 
-	public void setTest(Test test) {
-		this.test = test;
+	public void setSectionTitle(String sectionTitle) {
+		this.sectionTitle = sectionTitle;
 	}
 
-	public Student getStudent() {
-		return student;
+	public List<Question> getQuestions() {
+		return questions;
 	}
 
-	public void setStudent(Student student) {
-		this.student = student;
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
 	}
 	
 }
