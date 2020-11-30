@@ -1,19 +1,73 @@
 <div class="card card-user">
     <div class="card-body">
-        <form [formGroup]="form">
+        <form [formGroup]="testForm">
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label>Question</label>
-                        <input type="text" class="form-control" placeholder="Write a question" formControlName="question">
+                        <label>Test name: </label>
+                        <input id="testName" name="testName" type="text" class="form-control" placeholder="Write a test name"
+                            formControlName="testName" [ngClass]="{'is-invalid': testForm.get('testName').touched && 
+                            testForm.get('testName').invalid}">
+                        <div class = "invalid-feedback">
+                            <div>Test title is required</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-12">
+                    <label>Course:</label><br>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Choose a course</mat-label>
+                        <mat-select formControlName="course">
+                            <mat-option *ngFor="let course of courses" [value]="course.id">
+                                {{course.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="sectionForm">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Section {{sectionNum}}:</label>
+                        <input type="text" class="form-control" placeholder="Write a section name"
+                            formControlName="section"[ngClass]="{'is-invalid': sectionForm.get('section').touched && 
+                            sectionForm.get('section').invalid}">
+                        <div class = "invalid-feedback">
+                            <div>Section title is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form [formGroup]="form">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Question {{questionNum}}:</label>
+                        <input type="text" class="form-control" placeholder="Write a question"
+                            formControlName="question"[ngClass]="{'is-invalid': form.get('question').touched && 
+                            form.get('question').invalid}">
+                        <div class = "invalid-feedback">
+                            <div>Question text is required</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-md-8 pr-1">
                     <div class="form-group">
-                        <label>Answer</label>
-                        <input type="text" class="form-control" placeholder="Write the offered answer" id="answer" formControlName="firstAnswer">
+                        <label>Answer 1:</label>
+                        <input type="text" class="form-control" placeholder="Write the offered answer" id="answer"
+                            formControlName="firstAnswer"[ngClass]="{'is-invalid': form.get('firstAnswer').touched && 
+                            form.get('firstAnswer').invalid}">
+                        <div class = "invalid-feedback">
+                            <div>Answer text is required</div>
+                        </div>
 
                     </div>
                 </div>
@@ -21,35 +75,47 @@
                     <div class="form-group">
                         <input type="checkbox" class=" form-control form-check-input largerCheckbox"
                             id="materialUnchecked" formControlName="firstCorr">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="form-check-label"
+                        &nbsp;&nbsp;<label class="form-check-label"
                             for="materialUnchecked">Correct</label>
                     </div>
 
                 </div>
             </div>
-            <div class="row"  *ngFor="let answer of answers">
-                <div class="col-md-8 pr-1">
-                    <div class="form-group">
-                        <label>Answer</label>
-                        <input type="text" class="form-control" placeholder="Write the offered answer" id="answer" formControlName="answer">
+
+            <div formArrayName="formAnswers">
+                <div class="row" *ngFor="let answer of formAnswers().controls; let i=index" [formGroupName]="i">
+                    <div class="col-md-8 pr-1">
+                        <div class="form-group">
+                            <label>Answer {{i+2}}:</label>
+                            <input type="text" class="form-control" placeholder="Write the offered answer" id="answer"
+                                formControlName="text" [ngClass]="{'is-invalid': formAnswers().controls[i].get('text').touched && 
+                                formAnswers().controls[i].get('text').invalid}" required>
+                            <div class = "invalid-feedback">
+                                <div>Answer text is required</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-2 px-1">
+                        <div class="form-group">
+                            <input type="checkbox" class=" form-control form-check-input largerCheckbox"
+                                id="materialUnchecked" formControlName="correct">
+                            &nbsp;&nbsp;<label class="form-check-label"
+                                for="materialUnchecked">Correct</label>
+                        </div>
 
                     </div>
-                </div>
-                <div class="col-md-2 px-1">
-                    <div class="form-group">
-                        <input type="checkbox" class=" form-control form-check-input largerCheckbox"
-                            id="materialUnchecked" formControlName="corr">
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="form-check-label"
-                            for="materialUnchecked">Correct</label>
-                    </div>
-
                 </div>
             </div>
             <div class="row">
                 <div class="update ml-auto mr-auto">
-                    <button type="submit" class="btn btn-primary btn-round" (click)= "addNewAnswer()">Add new answer</button>
-                    <button type="submit" class="btn btn-primary btn-round" (click)= "nextQuestion()">Next question</button>
-                    <button type="submit" class="btn btn-primary btn-round" (click) = "finishTest()">Finish test</button>
+                    <button type="submit" class="btn btn-primary btn-round" (click)="addAnswer()">new
+                        answer</button>
+                    <button type="submit" class="btn btn-primary btn-round" (click)="nextQuestion()">Next
+                        question</button>
+                    <button type="submit" class="btn btn-primary btn-round" (click)="nextSection()">Next
+                        section</button>
+                    <button type="submit" class="btn btn-primary btn-round" (click)="finishTest()">Finish test</button>
                 </div>
             </div>
         </form>
