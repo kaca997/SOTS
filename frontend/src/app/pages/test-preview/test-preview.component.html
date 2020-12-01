@@ -1,0 +1,17 @@
+<h1 *ngIf="testsToDo.length === 0" style="text-align: center;">There are no tests to be shown!</h1>
+
+<h1 style="text-align: center;">{{testsToDo[0].courseName}}</h1>
+
+<div fxLayoutAlign="left stretch" fxLayout="row wrap">
+    <mat-card class="card" *ngFor="let test of testsToDo">
+        <mat-card-header>
+          <mat-card-title fxLayoutAlign="center center">{{test.title}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <strong>Teacher: </strong> {{test.teacherFirstName}} {{test.teacherLastName}}
+        </mat-card-content>
+        <button *ngIf="(!done && !isTeacher)" mat-flat-button class="btn-primary btn-block" style="border-radius: 20px;" (click)="startTest(test.testId)">Start test</button>
+        <button *ngIf="done" mat-flat-button class="btn-dark btn-block" style="border-radius: 20px;" (click)="testDetails(test.doneTestId)">Test details</button>
+        <button *ngIf="(!done && isTeacher)" mat-flat-button class="btn-dark btn-block" style="border-radius: 20px;" (click)="testDetailsTeacher(test.testId)">Test details</button>
+    </mat-card>
+</div>

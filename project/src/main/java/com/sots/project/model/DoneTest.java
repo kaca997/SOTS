@@ -1,5 +1,6 @@
 package com.sots.project.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -33,7 +34,7 @@ public class DoneTest {
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "done_test_id")
-	private List<Answer> chosenAnswers;
+	private List<ChosenAnswer> chosenAnswers = new ArrayList<ChosenAnswer>();
 
 	public DoneTest() {
 		super();
@@ -68,5 +69,21 @@ public class DoneTest {
 	public void setStudent(Student student) {
 		this.student = student;
 	}
+
+	public List<ChosenAnswer> getChosenAnswers() {
+		return chosenAnswers;
+	}
+
+	public void setChosenAnswers(List<ChosenAnswer> chosenAnswers) {
+		this.chosenAnswers = chosenAnswers;
+	}
+
+	@Override
+	public String toString() {
+		return "DoneTest [id=" + id + ", test=" + test + ", student=" + student + ", chosenAnswers=" + chosenAnswers
+				+ "]";
+	}
+	
+	
 	
 }
