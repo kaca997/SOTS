@@ -55,4 +55,9 @@ export class TestService {
     let testUrl =  "http://localhost:8080/test/submitTest";
 		return this.http.post(testUrl, test, {headers: this.headers});
   }
+
+  getCoursesByTeacher(){
+    let testUrl =  "http://localhost:8080/test/getCoursesByTeacher";
+		return this.http.get<any[]>(testUrl, {headers: this.headers});
+  }
 }

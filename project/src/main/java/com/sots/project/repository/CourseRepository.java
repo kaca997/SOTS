@@ -14,4 +14,5 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
 	
 	@Query(value = "SELECT cr.* FROM course cr JOIN teacher_course sc ON sc.course_id = cr.id WHERE sc.teacher_id = ?1", nativeQuery = true)	
 	List<Course> findTeacherCourses(Long teacherID);
+
 }

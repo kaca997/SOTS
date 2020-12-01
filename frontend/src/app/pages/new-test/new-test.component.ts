@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TestService } from 'app/services/test.service';
 import { ToastrService } from 'ngx-toastr';
@@ -10,8 +10,15 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NewTestComponent implements OnInit {
   form : FormGroup;
-  answers: any[] = []
-  questions = []
+  testForm : FormGroup;
+  sectionForm : FormGroup;
+  questions: any[] = []
+  courses: any[] = []
+  sections: any[] = []
+  questionNum = 1
+  answerNum = 1
+  sectionNum = 1
+
 
   constructor(private fb: FormBuilder,
     private router: Router,
@@ -22,53 +29,74 @@ export class NewTestComponent implements OnInit {
         question :[null, Validators.required],
         firstAnswer :[null, Validators.required], 
         firstCorr : [false, Validators.required],
-        answer: [null],
-        corr: [false] 
+        formAnswers: this.fb.array([]),
+        //corr: [false] a
+      });
+
+      this.sectionForm = this.fb.group({
+        section : [null, Validators.required]
+      });
+
+      this.testForm = this.fb.group({
+        testName: [null, Validators.required],
+        course : [null, Validators.required]
       })
     }
 
   ngOnInit(): void {
-  }
-
-  addNewAnswer() {
-    if (this.answers.length == 0) {
-      this.answers.push({
-        text: this.form.value.firstAnswer,
-        correct: this.form.value.firstCorr
-      })
-    }
-    else{
-      this.answers.push({
-        text: this.form.value.answer,
-        correct: this.form.value.corr
-      })
-      // this.form.controls['answer'].setValue("")
-    }
-    // console.log(this.answers)
-  }
-
-  nextQuestion(){
-    this.addNewAnswer()
-    
-    this.questions.push({
-      text: this.form.value.question,
-      answers: this.answers
-    }
-    )
-    this.form.reset();
-    this.form.controls['firstCorr'].setValue(false)
-    this.form.controls['corr'].setValue(false)
-    console.log(this.questions)
-    this.answers = []
+    this.getCourses();
   }
 
   finishTest(){
-    this.nextQuestion();
-    this.form.reset();
-    let test = {
-      questions: this.questions
+    if (this.validationOnCLick()) {
+      return
     }
-    console.log(JSON.stringify(test));
+    let answers: any[] = []
+    answers.push({
+      text: this.form.controls['firstAnswer'].value,
+      correct: this.form.controls['firstCorr'].value
+     })
+    answers = answers.concat(this.form.controls['formAnswers'].value)
+    let flag = false;
+    if (answers.some(code => code.correct === true)){
+      flag = true;
+    }
+
+    if (flag == false){
+      this.toastr.error("There mustn't be questions that do not have correct answer.");
+      return;
+    }
+    console.log(answers)
+    this.questions.push({
+      text: this.form.value.question,
+      answers: answers
+      }
+    )
+    
+    this.sections.push({
+      sectionTitle : this.sectionForm.controls['section'].value,
+      questions : this.questions
+    })
+    this.form.reset();
+    this.questionNum = 1;
+    this.sectionNum = 1;
+    const control = <FormArray>this.form.controls['formAnswers'];
+    for(let i = control.length-1; i >= 0; i--) {
+        control.removeAt(i)
+    }   
+    this.form.controls['firstCorr'].setValue(false)
+    this.questions = []
+    this.sectionForm.reset();
+
+    let test = {
+      testTitle : this.testForm.controls['testName'].value,
+      courseId: this.testForm.controls['course'].value,
+      sections: this.sections
+    }
+    this.testForm.reset();
+    console.log(test);
+    this.sections = []
+
     this.testService.createTest(test).subscribe(
 			result => {
         console.log(result)
@@ -82,4 +110,131 @@ export class NewTestComponent implements OnInit {
 		);
   }
 
+  getCourses(){
+    this.testService.getCoursesByTeacher().subscribe(
+      courses => {
+        this.courses = courses;
+        console.log(courses);
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  nextSection(){
+    if (this.validationOnCLick()) {
+      return
+    }
+    let answers: any[] = []
+    answers.push({
+      text: this.form.controls['firstAnswer'].value,
+      correct: this.form.controls['firstCorr'].value
+     })
+    answers = answers.concat(this.form.controls['formAnswers'].value)
+    console.log(answers)
+    let flag = false;
+    if (answers.some(code => code.correct === true)){
+      flag = true;
+    }
+
+    if (flag == false){
+      this.toastr.error("There mustn't be questions that do not have correct answer.");
+      return;
+    }
+    this.questions.push({
+      text: this.form.value.question,
+      answers: answers
+      }
+    )
+    
+    this.sections.push({
+      sectionTitle : this.sectionForm.controls['section'].value,
+      questions : this.questions
+    })
+    this.form.reset();
+    this.questionNum = 1;
+    this.sectionNum++;
+    const control = <FormArray>this.form.controls['formAnswers'];
+    for(let i = control.length-1; i >= 0; i--) {
+        control.removeAt(i)
+    }   
+    this.form.controls['firstCorr'].setValue(false)
+    this.questions = []
+    this.sectionForm.reset();
+  }
+
+  newAnswer(): FormGroup {
+  //  this.answerNum++;
+    return this.fb.group({
+      text: '',
+      correct: false,
+    })
+    
+  }
+
+  formAnswers() : FormArray {
+    return this.form.get("formAnswers") as FormArray
+  }
+  
+  addAnswer() {
+    if (this.validationOnCLick()) {
+      return
+    }
+    this.formAnswers().push(this.newAnswer());
+  }
+
+  removeAnswer(i:number) {
+    this.formAnswers().removeAt(i);
+  }
+
+  nextQuestion(){
+    if (this.validationOnCLick()) {
+      return
+    }
+    let answers: any[] = []
+    answers.push({
+      text: this.form.controls['firstAnswer'].value,
+      correct: this.form.controls['firstCorr'].value
+     })
+     
+    answers = answers.concat(this.form.controls['formAnswers'].value)
+    let flag = false;
+     if (answers.some(code => code.correct === true)){
+       flag = true;
+     }
+ 
+     if (flag == false){
+       this.toastr.error("There mustn't be questions that do not have correct answer.");
+       return;
+     }
+    console.log(answers)
+    this.questions.push({
+      text: this.form.value.question,
+      answers: answers
+      }
+    )
+    
+
+    this.form.reset();
+    const control = <FormArray>this.form.controls['formAnswers'];
+    for(let i = control.length-1; i >= 0; i--) {
+        control.removeAt(i)
+    }   
+    this.questionNum++;
+    this.form.controls['firstCorr'].setValue(false)
+    
+  }
+
+  validationOnCLick(){
+    if (this.testForm.invalid || this.sectionForm.invalid || this.form.invalid){
+      this.testForm.markAllAsTouched();
+      this.form.markAllAsTouched();
+      this.sectionForm.markAllAsTouched();
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 }

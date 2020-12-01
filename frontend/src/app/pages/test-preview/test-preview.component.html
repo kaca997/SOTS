@@ -11,7 +11,7 @@
             <strong>Teacher: </strong> {{test.teacherFirstName}} {{test.teacherLastName}}
         </mat-card-content>
         <button *ngIf="(!done && !isTeacher)" mat-flat-button class="btn-primary btn-block" style="border-radius: 20px;" (click)="startTest(test.testId)">Start test</button>
-        <button *ngIf="done" mat-flat-button class="btn-secondary btn-block" style="border-radius: 20px;" (click)="testDetails(test.doneTestId)">Test details</button>
-        <button *ngIf="(!done && isTeacher)" mat-flat-button class="btn-secondary btn-block" style="border-radius: 20px;" (click)="testDetailsTeacher(test.testId)">Test details</button>
+        <button *ngIf="done" mat-flat-button class="btn-dark btn-block" style="border-radius: 20px;" (click)="testDetails(test.doneTestId)">Test details</button>
+        <button *ngIf="(!done && isTeacher)" mat-flat-button class="btn-dark btn-block" style="border-radius: 20px;" (click)="testDetailsTeacher(test.testId)">Test details</button>
     </mat-card>
 </div>

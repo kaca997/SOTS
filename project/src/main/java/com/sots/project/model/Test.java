@@ -45,10 +45,13 @@ public class Test {
 		super();
 	}
 
-	public Test(List<Section> sections, Teacher teacher) {
+	public Test(String title, Boolean active, List<Section> sections, Teacher teacher, Course course) {
 		super();
+		this.title = title;
+		this.active = active;
 		this.sections = sections;
 		this.teacher = teacher;
+		this.course = course;
 	}
 
 	public Long getId() {

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.sots.project.dto.TestDetailsDTO;
+import com.sots.project.dto.TestDTO;
 import com.sots.project.dto.UpdateTestDTO;
 import com.sots.project.model.Test;
 import com.sots.project.service.InvalidDataException;
@@ -29,9 +29,9 @@ public class TestController {
 	
 	@PreAuthorize("hasRole('ROLE_TEACHER')")
 	@PostMapping("/create")
-	public ResponseEntity<?> create(@RequestBody Test test) {
+	public ResponseEntity<?> create(@RequestBody TestDTO testDTO) {
 		try {
-			return new ResponseEntity<>(testService.save(test), HttpStatus.OK);
+			return new ResponseEntity<>(testService.save(testDTO), HttpStatus.OK);
 		} catch (InvalidDataException e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -127,6 +127,16 @@ public class TestController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 		catch(Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/getCoursesByTeacher")
+	public ResponseEntity<?> getCoursesToAddTest(){
+		try {
+			return new ResponseEntity<>(testService.getCoursesByTeacher(), HttpStatus.OK);
+		} catch (InvalidDataException e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
