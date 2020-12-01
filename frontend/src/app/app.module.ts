@@ -17,6 +17,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './core/material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NewTestComponent } from './pages/new-test/new-test.component';
+import { CoursesComponent } from './pages/courses/courses.component';
+import { TestPreviewComponent } from './pages/test-preview/test-preview.component';
+import { TestDetailsComponent } from './pages/test-details/test-details.component';
 
 
 @NgModule({
@@ -24,7 +27,10 @@ import { NewTestComponent } from './pages/new-test/new-test.component';
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
-    NewTestComponent
+    NewTestComponent,
+    CoursesComponent,
+    TestPreviewComponent,
+    TestDetailsComponent
   ],
   imports: [
     BrowserAnimationsModule,

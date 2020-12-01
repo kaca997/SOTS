@@ -98,5 +98,11 @@ public class Test {
 	public void setCourse(Course course) {
 		this.course = course;
 	}
+
+	@Override
+	public String toString() {
+		return "Test [id=" + id + ", title=" + title + ", active=" + active + ", sections=" + sections + ", teacher="
+				+ teacher + ", course=" + course + "]";
+	}
 	
 }

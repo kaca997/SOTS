@@ -1,0 +1,13 @@
+<div fxLayoutAlign="left stretch" fxLayout="row wrap">
+    <mat-card class="card" *ngFor="let course of courses">
+        <mat-card-header>
+          <mat-card-title fxLayoutAlign="center center">{{course.name}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <strong>Teachers: </strong> <span *ngFor="let teacher of course.teachers; let i = index">{{teacher.firstName}} {{teacher.lastName}} <span *ngIf="i != course.teachers.length - 1">,</span> </span>
+        </mat-card-content>
+        <button *ngIf="!isTeacher" mat-flat-button class="btn-primary btn-block" style="border-radius: 20px;" (click)="testsToDo(course.id)">Tests to do</button>
+        <button *ngIf="!isTeacher" mat-flat-button class="btn-dark btn-block" style="border-radius: 30px;" (click)="doneTests(course.id)">Tests done</button>
+        <button *ngIf="isTeacher" mat-flat-button class="btn-dark btn-block" style="border-radius: 30px;" (click)="myTests(course.id)">Tests</button>
+    </mat-card>
+</div>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sots.project.dto.TestDetailsDTO;
 import com.sots.project.dto.UpdateTestDTO;
 import com.sots.project.model.Test;
 import com.sots.project.service.InvalidDataException;
@@ -65,6 +66,69 @@ public class TestController {
 	@GetMapping("/getAll")
 	public ResponseEntity<List<Test>> getAll() {
 		return new ResponseEntity<>(testService.getAll(), HttpStatus.OK);
+	}	
+	
+	@GetMapping("/getCourseTestsToDo/{courseId}")
+	public ResponseEntity<?> getAllTestForStudentByCourse(@PathVariable Long courseId) {
+		System.out.println(courseId);
+		try {
+			return new ResponseEntity<>(testService.getCourseTestsToDo(courseId), HttpStatus.OK);
+		}
+		catch (InvalidDataException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		catch(Exception e){
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
 	}
-
+	
+	@GetMapping("/getCourseTestsForTeacher/{courseId}")
+	public ResponseEntity<?> getCourseTestsForTeacher(@PathVariable Long courseId) {
+		System.out.println(courseId);
+		try {
+			return new ResponseEntity<>(testService.getTeacherCourseTest(courseId), HttpStatus.OK);
+		}
+		catch (InvalidDataException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		catch(Exception e){
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/getTest/{testId}")
+	public ResponseEntity<?> getTest(@PathVariable Long testId) {
+		System.out.println(testId);
+		try {
+			TestDetailsDTO dto = testService.getTest(testId);
+			return new ResponseEntity<>(dto, HttpStatus.OK);
+		}
+		catch (InvalidDataException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/getTestTeacher/{testId}")
+	public ResponseEntity<?> getTestTeacher(@PathVariable Long testId) {
+		System.out.println(testId);
+		try {
+			TestDetailsDTO dto = testService.getTestTeacher(testId);
+			return new ResponseEntity<>(dto, HttpStatus.OK);
+		}
+		catch (InvalidDataException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 }
