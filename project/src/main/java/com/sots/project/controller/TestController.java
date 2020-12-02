@@ -68,6 +68,7 @@ public class TestController {
 		return new ResponseEntity<>(testService.getAll(), HttpStatus.OK);
 	}	
 	
+	@PreAuthorize("hasRole('ROLE_STUDENT')")
 	@GetMapping("/getCourseTestsToDo/{courseId}")
 	public ResponseEntity<?> getAllTestForStudentByCourse(@PathVariable Long courseId) {
 		System.out.println(courseId);
@@ -83,6 +84,7 @@ public class TestController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ROLE_TEACHER')")
 	@GetMapping("/getCourseTestsForTeacher/{courseId}")
 	public ResponseEntity<?> getCourseTestsForTeacher(@PathVariable Long courseId) {
 		System.out.println(courseId);
@@ -98,6 +100,7 @@ public class TestController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ROLE_STUDENT')")
 	@GetMapping("/getTest/{testId}")
 	public ResponseEntity<?> getTest(@PathVariable Long testId) {
 		System.out.println(testId);
@@ -115,6 +118,7 @@ public class TestController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ROLE_TEACHER')")
 	@GetMapping("/getTestTeacher/{testId}")
 	public ResponseEntity<?> getTestTeacher(@PathVariable Long testId) {
 		System.out.println(testId);

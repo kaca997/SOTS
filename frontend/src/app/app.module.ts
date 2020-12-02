@@ -20,6 +20,7 @@ import { NewTestComponent } from './pages/new-test/new-test.component';
 import { CoursesComponent } from './pages/courses/courses.component';
 import { TestPreviewComponent } from './pages/test-preview/test-preview.component';
 import { TestDetailsComponent } from './pages/test-details/test-details.component';
+import { ErrorPageComponent } from './pages/error-page/error-page.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { TestDetailsComponent } from './pages/test-details/test-details.componen
     NewTestComponent,
     CoursesComponent,
     TestPreviewComponent,
-    TestDetailsComponent
+    TestDetailsComponent,
+    ErrorPageComponent
   ],
   imports: [
     BrowserAnimationsModule,

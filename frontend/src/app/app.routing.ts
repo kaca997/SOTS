@@ -3,6 +3,7 @@ import { LoginGuard } from './guard/login-guard.service';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './login/login.component';
+import { ErrorPageComponent } from './pages/error-page/error-page.component';
 
 export const AppRoutes: Routes = [
   {
@@ -12,7 +13,7 @@ export const AppRoutes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'new-test',
+    redirectTo: 'courses',
     pathMatch: 'full',
   }, 
   {
@@ -24,8 +25,9 @@ export const AppRoutes: Routes = [
       loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
   }]
 },
-  {
-    path: '**',
-    redirectTo: 'new-test'
-  }
+{ path: 'not-found', component: ErrorPageComponent},
+{
+  path: "**",
+  redirectTo: "not-found"
+}
 ]

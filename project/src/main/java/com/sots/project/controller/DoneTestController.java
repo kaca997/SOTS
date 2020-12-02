@@ -3,6 +3,7 @@ package com.sots.project.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ public class DoneTestController {
 	@Autowired
 	private DoneTestService doneTestService;
 	
+	@PreAuthorize("hasRole('ROLE_STUDENT')")
 	@GetMapping("/getDoneTests/{courseId}")
 	public ResponseEntity<?> getDoneTests(@PathVariable Long courseId) {
 		System.out.println(courseId);
@@ -37,6 +39,7 @@ public class DoneTestController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ROLE_STUDENT')")
 	@PostMapping("/submitTest")
 	public ResponseEntity<?> submitTest(@RequestBody TestDetailsDTO dto) {
 		try {
@@ -54,6 +57,7 @@ public class DoneTestController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ROLE_STUDENT')")
 	@GetMapping("/getDoneTest/{doneTestId}")
 	public ResponseEntity<?> getTest(@PathVariable Long doneTestId) {
 		System.out.println(doneTestId);
