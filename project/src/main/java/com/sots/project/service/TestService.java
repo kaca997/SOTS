@@ -142,9 +142,11 @@ public class TestService {
 	}
 	
 	public List<TestPreviewDTO> getCourseTestsToDo(Long courseId) throws InvalidDataException {
-		Course c = courseRepository.findById(courseId).get();
-		if(c==null) {
-			throw new InvalidDataException("This course does not exist!");
+		Course c;
+		try {
+			c = courseRepository.findById(courseId).get();
+		}catch(Exception e){
+			throw new InvalidDataException("Course not found!");
 		}
 		System.out.println(c.getTests().size() + " ---------: "+ c.getTests());
 		Long studentId = ((Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
@@ -174,9 +176,11 @@ public class TestService {
 	}
 	
 	public List<TestPreviewDTO> getTeacherCourseTest(Long courseId) throws InvalidDataException {
-		Course c = courseRepository.findById(courseId).get();
-		if(c==null) {
-			throw new InvalidDataException("This course does not exist!");
+		Course c;
+		try {
+			c = courseRepository.findById(courseId).get();
+		}catch(Exception e){
+			throw new InvalidDataException("Course not found!");
 		}
 		System.out.println(c.getTests().size() + " ---------: "+ c.getTests());
 		Long teacherId = ((Teacher) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
@@ -198,8 +202,11 @@ public class TestService {
 	}
 	
 	public TestDetailsDTO getTest(Long testId) throws InvalidDataException {
-		Test t = testRepository.findById(testId).get();
-		if(t==null) {
+		Test t;
+		try {
+			t = testRepository.findById(testId).get();
+		}
+		catch(Exception e){
 			throw new InvalidDataException("Test not found!");
 		}
 		
@@ -210,7 +217,7 @@ public class TestService {
 		
 		Student st = (Student) userRepository.findById(s.getId()).get();
 		if(!(t.getCourse().getStudents().contains(st))) {
-			throw new InvalidDataException("You can't do this test!");
+			throw new InvalidDataException("You are not assigned to this test!");
 		}
 		
 		List<DoneTest> done = doneTestRepository.findAllByStudent(s);
@@ -225,8 +232,10 @@ public class TestService {
 	}
 	
 	public TestDetailsDTO getTestTeacher(Long testId) throws InvalidDataException {
-		Test t = testRepository.findById(testId).get();
-		if(t==null) {
+		Test t;
+		try {
+		 t = testRepository.findById(testId).get();
+		}catch(Exception e){
 			throw new InvalidDataException("Test not found!");
 		}
 		
@@ -237,7 +246,7 @@ public class TestService {
 		
 		Teacher st = (Teacher) userRepository.findById(s.getId()).get();
 		if(!(t.getCourse().getTeachers().contains(st))) {
-			throw new InvalidDataException("You are not assigned to this test");
+			throw new InvalidDataException("You are not assigned to this test!");
 		}
 		
 		TestDetailsDTO dto = new TestDetailsDTO(t);

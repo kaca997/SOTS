@@ -67,8 +67,10 @@ public class DoneTestService {
 	
 	public TestDetailsDTO submitTest(TestDetailsDTO dto) throws InvalidDataException {
 		DoneTest done = new DoneTest();
-		Test t = testRepository.findById(dto.getTestId()).get();
-		if(t==null) {
+		Test t;
+		try {
+			t = testRepository.findById(dto.getTestId()).get();
+		}catch(Exception e){
 			throw new InvalidDataException("Test not found!");
 		}
 		done.setTest(t);
@@ -110,8 +112,10 @@ public class DoneTestService {
 	
 	
 	public TestDetailsDTO getDoneTest(Long doneTestId) throws InvalidDataException {
-		DoneTest dt = doneTestRepository.findById(doneTestId).get();
-		if(dt==null) {
+		DoneTest dt;
+		try {
+			dt = doneTestRepository.findById(doneTestId).get();
+		}catch(Exception e){
 			throw new InvalidDataException("Test not found!");
 		}
 		

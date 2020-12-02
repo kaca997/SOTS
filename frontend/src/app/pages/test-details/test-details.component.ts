@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class TestDetailsComponent implements OnInit {
 
+  private error = null;
   private isTeacher = false;
   private done : boolean= false;
   private testId:number;
@@ -46,9 +47,11 @@ export class TestDetailsComponent implements OnInit {
       test => {
         this.test = test;
         console.log(this.test);
+        this.error = null;
       },
       error => {
         console.log(error);
+        this.error = error.error;
         this.toastr.error(error.error);
       }
     );
@@ -58,11 +61,15 @@ export class TestDetailsComponent implements OnInit {
     this.testService.getTestTeacher(this.testId).subscribe(
       test => {
         this.test = test;
+        this.error = null;
         console.log(this.test);
       },
       error => {
         console.log(error);
         this.toastr.error(error.error);
+        this.error = error.error;
+        ;
+        //this.router.navigate(['error-page'])
       }
     );
   }
@@ -71,10 +78,12 @@ export class TestDetailsComponent implements OnInit {
     this.testService.getDoneTest(this.testId).subscribe(
       test => {
         this.test = test;
+        this.error = null;
         console.log(this.test);
       },
       error => {
         console.log(error);
+        this.error = error.error;
         this.toastr.error(error.error);
       }
     );
