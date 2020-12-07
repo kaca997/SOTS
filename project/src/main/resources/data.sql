@@ -5,7 +5,7 @@ INSERT INTO `user` VALUES ('Student',1,'Pera','Peric','$2a$10$ygBCftE2h6/2D0Eo7z
 
 INSERT INTO `user_authority` VALUES (1,1),(2,2);
 
-INSERT INTO `course` VALUES (1,'Matematika'),(2,'Istorija'),(3,'Fizika'),(4,'Hemija');
+INSERT INTO `course` VALUES (1,'Matematika', null),(2,'Istorija', null),(3,'Fizika', null),(4,'Hemija', null);
 
 INSERT INTO `student_course` VALUES (1,1),(1,2),(1,3);
 
@@ -17,7 +17,8 @@ INSERT INTO `done_test` VALUES (1,1,2);
 
 INSERT INTO `section` VALUES (1,'Polinomi',1),(2,'Integrali',1);
 
-INSERT INTO `question` VALUES (1,'Koliko je (a+b)^2',1),(2,'Koliko je (a+b)^3',1),(3,'Koliko integral od x',2),(4,'Koliko je integral od x^2',2),(5,'Koliko je integral od x^3',2);
+INSERT INTO `question` (id, text, section_id) VALUES (1,'Koliko je (a+b)^2',1),(2,'Koliko je (a+b)^3',1),
+(3,'Koliko integral od x',2),(4,'Koliko je integral od x^2',2),(5,'Koliko je integral od x^3',2);
 
 INSERT INTO `answer` VALUES (1,true,'Tacno',1),(2,false,'Netacno1',1),
 (3,false,'Netacno',2),(4,false,'Netacno1',2),(5,true,'Tacno tacno tacnooo',2),

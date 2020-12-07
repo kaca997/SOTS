@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -29,6 +30,10 @@ public class Question {
 	@JoinColumn(name = "question_id")
 	private List<Answer> answers;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="problem_id")
+	private Problem problem;
+	
 	public Question() {
 		super();
 	}
@@ -37,6 +42,13 @@ public class Question {
 		super();
 		this.text = text;
 		this.answers = answers;
+	}
+	
+	public Question(String text, List<Answer> answers, Problem problem) {
+		super();
+		this.text = text;
+		this.answers = answers;
+		this.problem = problem;
 	}
 
 	public String getText() {
@@ -61,6 +73,14 @@ public class Question {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Problem getProblem() {
+		return problem;
+	}
+
+	public void setProblem(Problem problem) {
+		this.problem = problem;
 	}
 	
 }
