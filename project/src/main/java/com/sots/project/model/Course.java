@@ -9,8 +9,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -36,6 +38,10 @@ public class Course {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "course")
 	@JsonBackReference(value="course-test")
 	private List<Test> tests;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "knowledge_space_domain_id")
+	private KnowledgeSpaceDomain knowledgeSpaceDomain;
 
 	public Course() {
 		super();
@@ -48,6 +54,16 @@ public class Course {
 		this.teachers = teachers;
 		this.students = students;
 		this.tests = tests;
+	}
+	
+	public Course(String name, List<Teacher> teachers, List<Student> students, List<Test> tests,
+			KnowledgeSpaceDomain knowledgeSpaceDomain) {
+		super();
+		this.name = name;
+		this.teachers = teachers;
+		this.students = students;
+		this.tests = tests;
+		this.knowledgeSpaceDomain = knowledgeSpaceDomain;
 	}
 
 	public Long getId() {
@@ -89,6 +105,13 @@ public class Course {
 	public void setTests(List<Test> tests) {
 		this.tests = tests;
 	}
-	
+
+	public KnowledgeSpaceDomain getKnowledgeSpaceDomain() {
+		return knowledgeSpaceDomain;
+	}
+
+	public void setKnowledgeSpaceDomain(KnowledgeSpaceDomain knowledgeSpaceDomain) {
+		this.knowledgeSpaceDomain = knowledgeSpaceDomain;
+	}
 	
 }
