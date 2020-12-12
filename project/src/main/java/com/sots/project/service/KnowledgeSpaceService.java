@@ -3,9 +3,9 @@ package com.sots.project.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sots.project.dto.KnowledgeSpaceDomainDTO;
+import com.sots.project.dto.KnowledgeSpaceDTO;
 import com.sots.project.model.Course;
-import com.sots.project.model.KnowledgeSpaceDomain;
+import com.sots.project.model.KnowledgeSpace;
 import com.sots.project.repository.CourseRepository;
 import com.sots.project.repository.KnowledgeSpaceRepository;
 
@@ -18,12 +18,12 @@ public class KnowledgeSpaceService {
 	@Autowired
 	private KnowledgeSpaceRepository knowledgeSpaceRepository; 
 	
-	public KnowledgeSpaceDomain save(KnowledgeSpaceDomainDTO domainDTO) throws InvalidDataException{
+	public KnowledgeSpace save(KnowledgeSpaceDTO domainDTO) throws InvalidDataException{
 		
 		Course course = courseRepository.findById(domainDTO.getCourseId()).get();
-		KnowledgeSpaceDomain ksd = new KnowledgeSpaceDomain(domainDTO.getProblems(), domainDTO.getRelations());
-		KnowledgeSpaceDomain saved = knowledgeSpaceRepository.save(ksd);
-		course.setKnowledgeSpaceDomain(saved);
+		KnowledgeSpace ksd = new KnowledgeSpace(domainDTO.getProblems(), domainDTO.getRelations());
+		KnowledgeSpace saved = knowledgeSpaceRepository.save(ksd);
+		//course.setKnowledgeSpace(saved);
 		
 		course = courseRepository.save(course);
 		

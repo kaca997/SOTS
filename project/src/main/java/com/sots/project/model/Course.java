@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "course")
@@ -40,8 +41,9 @@ public class Course {
 	private List<Test> tests;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "knowledge_space_domain_id")
-	private KnowledgeSpaceDomain knowledgeSpaceDomain;
+	@JoinColumn(name = "domain_id")
+	@JsonIgnore
+	private Domain domain;
 
 	public Course() {
 		super();
@@ -55,15 +57,16 @@ public class Course {
 		this.students = students;
 		this.tests = tests;
 	}
-	
-	public Course(String name, List<Teacher> teachers, List<Student> students, List<Test> tests,
-			KnowledgeSpaceDomain knowledgeSpaceDomain) {
+
+	public Course(Long id, String name, List<Teacher> teachers, List<Student> students, List<Test> tests,
+			Domain domain) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.teachers = teachers;
 		this.students = students;
 		this.tests = tests;
-		this.knowledgeSpaceDomain = knowledgeSpaceDomain;
+		this.domain = domain;
 	}
 
 	public Long getId() {
@@ -106,12 +109,11 @@ public class Course {
 		this.tests = tests;
 	}
 
-	public KnowledgeSpaceDomain getKnowledgeSpaceDomain() {
-		return knowledgeSpaceDomain;
+	public Domain getDomain() {
+		return domain;
 	}
 
-	public void setKnowledgeSpaceDomain(KnowledgeSpaceDomain knowledgeSpaceDomain) {
-		this.knowledgeSpaceDomain = knowledgeSpaceDomain;
+	public void setDomain(Domain domain) {
+		this.domain = domain;
 	}
-	
 }

@@ -8,22 +8,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sots.project.dto.KnowledgeSpaceDomainDTO;
+import com.sots.project.dto.KnowledgeSpaceDTO;
 import com.sots.project.service.InvalidDataException;
 import com.sots.project.service.KnowledgeSpaceService;
 
 @RestController
 @RequestMapping("/knowledgeSpace")
-public class KnowledgeSpaceDomainController {
+public class KnowledgeSpaceController {
 	
 	@Autowired
-	private KnowledgeSpaceService knowledgeSpaceDomainService;
+	private KnowledgeSpaceService knowledgeSpaceService;
 	
 	//@PreAuthorize("hasRole('ROLE_TEACHER')")
 	@PostMapping("/create")
-	public ResponseEntity<?> create(@RequestBody KnowledgeSpaceDomainDTO domainDTO) {
+	public ResponseEntity<?> create(@RequestBody KnowledgeSpaceDTO ksDTO) {
 		try {
-			return new ResponseEntity<>(knowledgeSpaceDomainService.save(domainDTO), HttpStatus.OK);
+			return new ResponseEntity<>(knowledgeSpaceService.save(ksDTO), HttpStatus.OK);
 		} catch (InvalidDataException e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

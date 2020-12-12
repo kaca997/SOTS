@@ -5,7 +5,7 @@ import java.util.List;
 import com.sots.project.model.Problem;
 import com.sots.project.model.Relation;
 
-public class KnowledgeSpaceDomainDTO {
+public class KnowledgeSpaceDTO {
 	
 	private Long courseId;
 	
@@ -13,14 +13,14 @@ public class KnowledgeSpaceDomainDTO {
 	
 	private List<Relation> relations;
 
-	public KnowledgeSpaceDomainDTO(Long courseId, List<Problem> problems, List<Relation> relations) {
+	public KnowledgeSpaceDTO(Long courseId, List<Problem> problems, List<Relation> relations) {
 		super();
 		this.courseId = courseId;
 		this.problems = problems;
 		this.relations = relations;
 	}
 
-	public KnowledgeSpaceDomainDTO() {
+	public KnowledgeSpaceDTO() {
 		super();
 	}
 
