@@ -29,9 +29,9 @@ public class KnowledgeSpace {
 	@Enumerated(EnumType.STRING)
 	private KnowledgeSpaceType knowledgeSpaceType;
 		
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "knowledge_space_id")
-	private List<Problem> listOfProblems;
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//	@JoinColumn(name = "knowledge_space_id")
+//	private List<Problem> listOfProblems;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "knowledge_space_id")
@@ -41,11 +41,18 @@ public class KnowledgeSpace {
 	@JoinColumn(name = "domain_id")
 	private Domain domain;
 
-	public KnowledgeSpace(List<Problem> listOfProblems, List<Relation> relations) {
+	public KnowledgeSpace(List<Relation> relations) {
 		super();
-		this.listOfProblems = listOfProblems;
 		this.relations = relations;
 	}
+
+	public KnowledgeSpace(KnowledgeSpaceType knowledgeSpaceType, List<Relation> relations, Domain domain) {
+		super();
+		this.knowledgeSpaceType = knowledgeSpaceType;
+		this.relations = relations;
+		this.domain = domain;
+	}
+
 
 	public KnowledgeSpace() {
 		super();
@@ -59,20 +66,28 @@ public class KnowledgeSpace {
 		this.id = id;
 	}
 
-	public List<Problem> getListOfProblems() {
-		return listOfProblems;
-	}
-
-	public void setListOfProblems(List<Problem> listOfProblems) {
-		this.listOfProblems = listOfProblems;
-	}
-
 	public List<Relation> getRelations() {
 		return relations;
 	}
 
 	public void setRelations(List<Relation> relations) {
 		this.relations = relations;
+	}
+
+	public KnowledgeSpaceType getKnowledgeSpaceType() {
+		return knowledgeSpaceType;
+	}
+
+	public void setKnowledgeSpaceType(KnowledgeSpaceType knowledgeSpaceType) {
+		this.knowledgeSpaceType = knowledgeSpaceType;
+	}
+
+	public Domain getDomain() {
+		return domain;
+	}
+
+	public void setDomain(Domain domain) {
+		this.domain = domain;
 	}
 	
 }

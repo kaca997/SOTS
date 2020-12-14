@@ -30,6 +30,10 @@ public class Domain {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "domain")
 	@JsonBackReference(value="domain-ks")
 	private List<KnowledgeSpace> knowledgeSpaces;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "domain_id")
+	private List<Problem> listOfProblems;
 
 	public Domain() {
 		super();
@@ -40,6 +44,13 @@ public class Domain {
 		this.id = id;
 		this.name = name;
 		this.knowledgeSpaces = knowledgeSpaces;
+	}
+
+	public Domain(String name, List<KnowledgeSpace> knowledgeSpaces, List<Problem> listOfProblems) {
+		super();
+		this.name = name;
+		this.knowledgeSpaces = knowledgeSpaces;
+		this.listOfProblems = listOfProblems;
 	}
 
 	public Long getId() {
@@ -68,7 +79,15 @@ public class Domain {
 
 	@Override
 	public String toString() {
-		return "Domain [id=" + id + ", name=" + name + ", knowledgeSpaces=" + knowledgeSpaces + "]";
+		return "Domain [id=" + id + ", name=" + name + ", knowledgeSpaces=" + knowledgeSpaces + ", listOfProblems" + listOfProblems + "]";
+	}
+
+	public List<Problem> getListOfProblems() {
+		return listOfProblems;
+	}
+
+	public void setListOfProblems(List<Problem> listOfProblems) {
+		this.listOfProblems = listOfProblems;
 	}
 	
 }
