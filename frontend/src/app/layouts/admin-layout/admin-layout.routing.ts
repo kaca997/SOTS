@@ -31,7 +31,7 @@ export const AdminLayoutRoutes: Routes = [
    { path: "new-test",       component: NewTestComponent,
    data: { expectedRoles: 'ROLE_TEACHER' },
    canActivate: [RoleGuard] },
-   { path: "new-course",       component: GraphComponent,
+   { path: "new-domain",       component: GraphComponent,
    data: { expectedRoles: 'ROLE_TEACHER' },
    canActivate: [RoleGuard] },
 ];

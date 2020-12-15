@@ -9,7 +9,7 @@ export interface RouteInfo {
 }
 
 export const ROUTES_TEACHER: RouteInfo[] = [
-    { path: '/new-course',     title: 'Add new course',         icon:'nc-simple-add',       class: '' },
+    { path: '/new-domain',     title: 'Add new domain',         icon:'nc-simple-add',       class: '' },
     { path: '/new-test',     title: 'Add new test',         icon:'nc-simple-add',       class: '' },
     { path: '/courses',     title: 'Courses',         icon:'nc-single-copy-04',       class: '' },
 ];

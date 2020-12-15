@@ -34,12 +34,15 @@ public class DomainService {
 	@Autowired
 	private ProblemRepository problemRepository;
 	
-	public String save(NewDomainDTO domainDTO) {
+	public String save(NewDomainDTO domainDTO) throws InvalidDataException {
 		Domain domain = new Domain();
 		domain.setName(domainDTO.getDomainName());
-		
-		Course c = courseRepository.findById(domainDTO.getCourseId()).get();
-		
+		Course c;
+		try {
+			c = courseRepository.findById(domainDTO.getCourseId()).get();
+		}catch(Exception e){
+			throw new InvalidDataException("Course not found!");
+		}
 		
 		for(String problemName : domainDTO.getProblemList()) {
 			domain.getListOfProblems().add(new Problem(problemName));
@@ -55,9 +58,15 @@ public class DomainService {
 		List<Relation> relations = new ArrayList<>();
 		
 		for(NewRelationDTO relation : domainDTO.getRelations()) {
+			Problem from;
+			Problem to;
 			System.out.println(relation);
-			Problem from = problemRepository.findByNameAndDomain(relation.getSurmiseFrom(), domain.getId());
-			Problem to = problemRepository.findByNameAndDomain(relation.getSurmiseTo(), domain.getId());
+			try {
+				from = problemRepository.findByNameAndDomain(relation.getSurmiseFrom(), domain.getId());
+				to = problemRepository.findByNameAndDomain(relation.getSurmiseTo(), domain.getId());
+			}catch(Exception e){
+				throw new InvalidDataException("Problem not found!");
+			}
 			relations.add(new Relation(from, to));
 		}
 		ks.setRelations(relations);

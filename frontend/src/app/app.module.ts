@@ -22,7 +22,6 @@ import { TestPreviewComponent } from './pages/test-preview/test-preview.componen
 import { TestDetailsComponent } from './pages/test-details/test-details.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { GraphComponent } from './pages/graph/graph.component';
-import { NewDomainComponent } from './pages/new-domain/new-domain.component';
 
 
 @NgModule({
@@ -36,7 +35,6 @@ import { NewDomainComponent } from './pages/new-domain/new-domain.component';
     TestDetailsComponent,
     ErrorPageComponent,
     GraphComponent,
-    NewDomainComponent
   ],
   imports: [
     BrowserAnimationsModule,
