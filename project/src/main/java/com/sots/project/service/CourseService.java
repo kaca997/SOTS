@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.sots.project.dto.CourseDTO;
 import com.sots.project.model.Course;
+import com.sots.project.model.Domain;
+import com.sots.project.model.Problem;
 import com.sots.project.model.Student;
 import com.sots.project.model.Teacher;
 import com.sots.project.repository.CourseRepository;
@@ -44,6 +46,26 @@ public class CourseService {
 		}
 		return courses;
 		
+	}
+
+	public List<Problem> getProblemsByCourse(Long courseId) throws InvalidDataException {
+		
+		Course c = courseRepository.findById(courseId).get();
+		if (c == null) {
+			throw new InvalidDataException("Course not found.");
+		}
+		
+		Domain d = c.getDomain();
+		if (d == null) {
+			throw new InvalidDataException("Domain not defined for this course.");
+		}
+		
+		List<Problem> problems = d.getListOfProblems();
+		if (problems.isEmpty()) {
+			throw new InvalidDataException("Problems not defined for this course.");
+		}
+		
+		return problems;
 	}
 
 

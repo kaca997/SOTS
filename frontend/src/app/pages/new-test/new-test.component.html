@@ -19,7 +19,7 @@
                     <label>Course:</label><br>
                     <mat-form-field appearance="fill">
                         <mat-label>Choose a course</mat-label>
-                        <mat-select formControlName="course">
+                        <mat-select formControlName="course" #courseSelect (ngModelChange)="onChange($event)">
                             <mat-option *ngFor="let course of courses" [value]="course.id">
                                 {{course.name}}
                             </mat-option>
@@ -54,6 +54,22 @@
                         <div class = "invalid-feedback">
                             <div>Question text is required</div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Problem:</label><br>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Choose a problem</mat-label>
+                            <mat-select formControlName="problem" #problemSelect (ngModelChange)="onChangeP($event)">
+                                <mat-option *ngFor="let problem of problems" [value]="problem.id">
+                                    {{problem.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
             </div>

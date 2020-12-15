@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl  } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CourseService } from 'app/services/course.service';
 import { TestService } from 'app/services/test.service';
 import { ToastrService } from 'ngx-toastr';
 @Component({
@@ -15,18 +16,21 @@ export class NewTestComponent implements OnInit {
   questions: any[] = []
   courses: any[] = []
   sections: any[] = []
+  problems: any[] = []
   questionNum = 1
   answerNum = 1
   sectionNum = 1
-
+  // courseId: number;
 
   constructor(private fb: FormBuilder,
     private router: Router,
     private testService: TestService,
+    private courseService: CourseService,
     private toastr: ToastrService ) { 
 
       this.form = this.fb.group({
         question :[null, Validators.required],
+        problem :[null, Validators.required],
         firstAnswer :[null, Validators.required], 
         firstCorr : [false, Validators.required],
         formAnswers: this.fb.array([]),
@@ -69,7 +73,10 @@ export class NewTestComponent implements OnInit {
     console.log(answers)
     this.questions.push({
       text: this.form.value.question,
-      answers: answers
+      answers: answers,
+      problem : {
+        id: this.form.value.problem,
+        }
       }
     )
     
@@ -78,6 +85,7 @@ export class NewTestComponent implements OnInit {
       questions : this.questions
     })
     this.form.reset();
+    this.form.get("problem").setErrors(null) ;
     this.questionNum = 1;
     this.sectionNum = 1;
     const control = <FormArray>this.form.controls['formAnswers'];
@@ -122,6 +130,24 @@ export class NewTestComponent implements OnInit {
     )
   }
 
+  onChange(event){
+    this.problems = []
+    if (event == null) {
+      return
+    }
+    this.courseService.getProblemsByCourse(event).subscribe(
+      problems => {
+        this.problems = problems;
+        console.log(problems);
+      },
+      error => {
+        this.toastr.error(error.error);
+      }
+    )
+  }
+
+
+
   nextSection(){
     if (this.validationOnCLick()) {
       return
@@ -144,7 +170,10 @@ export class NewTestComponent implements OnInit {
     }
     this.questions.push({
       text: this.form.value.question,
-      answers: answers
+      answers: answers,
+      problem : {
+        id: this.form.value.problem,
+        }
       }
     )
     
@@ -153,6 +182,7 @@ export class NewTestComponent implements OnInit {
       questions : this.questions
     })
     this.form.reset();
+    this.form.get("problem").setErrors(null) ;
     this.questionNum = 1;
     this.sectionNum++;
     const control = <FormArray>this.form.controls['formAnswers'];
@@ -189,6 +219,8 @@ export class NewTestComponent implements OnInit {
   }
 
   nextQuestion(){
+    this.form.controls['problem'].setValidators([Validators.required])
+    this.form.controls['problem'].updateValueAndValidity();
     if (this.validationOnCLick()) {
       return
     }
@@ -211,19 +243,24 @@ export class NewTestComponent implements OnInit {
     console.log(answers)
     this.questions.push({
       text: this.form.value.question,
-      answers: answers
+      answers: answers,
+      problem : {
+        id: this.form.value.problem,
+        }
       }
     )
-    
 
     this.form.reset();
+    this.form.get("problem").setErrors(null) ;
+  
+
     const control = <FormArray>this.form.controls['formAnswers'];
     for(let i = control.length-1; i >= 0; i--) {
         control.removeAt(i)
     }   
     this.questionNum++;
     this.form.controls['firstCorr'].setValue(false)
-    
+   
   }
 
   validationOnCLick(){
@@ -236,5 +273,8 @@ export class NewTestComponent implements OnInit {
     else{
       return false;
     }
+  }
+
+  onChangeP(event) {
   }
 }
