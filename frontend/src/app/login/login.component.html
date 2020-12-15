@@ -21,7 +21,7 @@
             This field can't be empty!</small>
           </mat-form-field>
         </mat-card-content>
-        <button mat-stroked-button class="btn-block" (click)="submit()">Sign-in</button>
+        <button mat-stroked-button class="btn-block"  [disabled]="!form.valid" (click)="submit()">Sign-in</button>
       </form>
     </mat-card>
   

@@ -24,6 +24,11 @@ public class Problem {
 		this.id = id;
 		this.name = name;
 	}
+	
+	public Problem(String name) {
+		super();
+		this.name = name;
+	}
 
 	public Problem() {
 		super();

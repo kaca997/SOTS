@@ -21,6 +21,7 @@ import { CoursesComponent } from './pages/courses/courses.component';
 import { TestPreviewComponent } from './pages/test-preview/test-preview.component';
 import { TestDetailsComponent } from './pages/test-details/test-details.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { GraphComponent } from './pages/graph/graph.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ErrorPageComponent } from './pages/error-page/error-page.component';
     CoursesComponent,
     TestPreviewComponent,
     TestDetailsComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    GraphComponent,
   ],
   imports: [
     BrowserAnimationsModule,
