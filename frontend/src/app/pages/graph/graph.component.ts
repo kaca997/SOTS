@@ -49,13 +49,11 @@ export class GraphComponent implements OnInit {
   mouseupNode = null;
 
   nodes = [
-    { id: "Problem 1", reflexive: false },
-    { id: "Problem 2", reflexive: true },
-    { id: "Problem 3", reflexive: false }
+    { id: "Root Problem", reflexive: false }
   ];
   links = [
-    { source: this.nodes[0], target: this.nodes[1], left: false, right: true },
-    { source: this.nodes[1], target: this.nodes[2], left: false, right: true }
+    // { source: this.nodes[0], target: this.nodes[1], left: false, right: true },
+    // { source: this.nodes[1], target: this.nodes[2], left: false, right: true }
   ];
 
   constructor(private fb: FormBuilder, private cs: CourseService, private ds: DomainService, private router : Router, private toastr : ToastrService) { 
@@ -70,7 +68,6 @@ export class GraphComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.width = rect.width;
     this.getCourses()
 
     this.svg = d3.select('#graphContainer')
@@ -285,16 +282,23 @@ export class GraphComponent implements OnInit {
         }
         // add link to graph (update if exists)
         // NB: links are strictly source < target; arrows separately specified by booleans
-        const isRight = this.mousedownNode.id < this.mouseupNode.id;
-        const source = isRight ? this.mousedownNode : this.mouseupNode;
-        const target = isRight ? this.mouseupNode : this.mousedownNode;
-
+        // const isRight = this.mousedownNode.id < this.mouseupNode.id;
+        // const source = isRight ? this.mousedownNode : this.mouseupNode;
+        // const target = isRight ? this.mouseupNode : this.mousedownNode;
+        const source = this.mousedownNode
+        const target = this.mouseupNode
+        console.log("Source: ", source);
+        console.log("Target: ", target);
+        if(target.id == "Root Problem"){
+          this.toastr.warning("You can not add link to root problem")
+          return
+        }
         const link = this.links.filter((l) => l.source === source && l.target === target)[0];
         if (link) {
-          link.left = !isRight
-          link.right = isRight
+          // link.left = !isRight
+          // link.right = isRight
         } else {
-          this.links.push({ source, target, left: !isRight, right: isRight });
+          this.links.push({ source, target, left: false, right: true});
         }
 
         // select new link
@@ -466,6 +470,10 @@ export class GraphComponent implements OnInit {
 
   deleteProblem(){
     if (this.selectedNode) {
+      if(this.selectedNode.id === 'Root Problem'){
+        this.toastr.warning("You can not delete root problem")
+        return;
+      }
       this.nodes.splice(this.nodes.indexOf(this.selectedNode), 1);
       this.spliceLinksForNode(this.selectedNode);
     } else if (this.selectedLink) {
@@ -477,16 +485,19 @@ export class GraphComponent implements OnInit {
   }
 
   saveDomen(){
+    console.log(this.links)
     let domain : any = {}
     domain.domainName = this.domainForm.value.domainName;
     domain.courseId = +this.domainForm.value.courseName;
     domain.problemList = this.nodes.map(node => node.id);
-    let relation : any ={}
-    domain.relations = this.links.map(function (link) {
+    let relations = [] 
+    this.links.forEach(link =>{
+      let relation : any ={}
       relation.surmiseFrom = link.source.id;
       relation.surmiseTo = link.target.id;
-      return relation
+      relations.push(relation)
     })
+    domain.relations = relations
     console.log(domain)
     this.ds.creteDomain(domain).subscribe(
 			result => {

@@ -10,13 +10,13 @@ public class NewDomainDTO {
 	
 	private List<String> problemList;
 	
-	private List<RelationDTO> relations;
+	private List<NewRelationDTO> relations;
 
 	public NewDomainDTO() {
 		super();
 	}
 
-	public NewDomainDTO(String domainName, Long courseId, List<String> problemList, List<RelationDTO> relations) {
+	public NewDomainDTO(String domainName, Long courseId, List<String> problemList, List<NewRelationDTO> relations) {
 		super();
 		this.domainName = domainName;
 		this.courseId = courseId;
@@ -48,11 +48,11 @@ public class NewDomainDTO {
 		this.problemList = problemList;
 	}
 
-	public List<RelationDTO> getRelations() {
+	public List<NewRelationDTO> getRelations() {
 		return relations;
 	}
 
-	public void setRelations(List<RelationDTO> relations) {
+	public void setRelations(List<NewRelationDTO> relations) {
 		this.relations = relations;
 	}
 
