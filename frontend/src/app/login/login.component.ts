@@ -45,6 +45,9 @@ export class LoginComponent implements OnInit {
 				if (info.role == "ROLE_TEACHER") {
 					this.router.navigate(['new-test'])
 				}
+				else{
+					this.router.navigate(['courses']);
+				}
 				
 			},
 			error => {

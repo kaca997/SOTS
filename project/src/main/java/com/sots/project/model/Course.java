@@ -9,11 +9,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "course")
@@ -36,6 +39,11 @@ public class Course {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "course")
 	@JsonBackReference(value="course-test")
 	private List<Test> tests;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "domain_id")
+	@JsonIgnore
+	private Domain domain;
 
 	public Course() {
 		super();
@@ -48,6 +56,17 @@ public class Course {
 		this.teachers = teachers;
 		this.students = students;
 		this.tests = tests;
+	}
+
+	public Course(Long id, String name, List<Teacher> teachers, List<Student> students, List<Test> tests,
+			Domain domain) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.teachers = teachers;
+		this.students = students;
+		this.tests = tests;
+		this.domain = domain;
 	}
 
 	public Long getId() {
@@ -89,6 +108,12 @@ public class Course {
 	public void setTests(List<Test> tests) {
 		this.tests = tests;
 	}
-	
-	
+
+	public Domain getDomain() {
+		return domain;
+	}
+
+	public void setDomain(Domain domain) {
+		this.domain = domain;
+	}
 }

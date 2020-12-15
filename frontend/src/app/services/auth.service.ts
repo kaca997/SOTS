@@ -30,11 +30,11 @@ export class AuthenticationService {
 		}
 		return false;
   }
-  	isAdmin(): boolean {
+  	isTeacher(): boolean {
 		const token = localStorage.getItem('user');
 		const jwt: JwtHelperService = new JwtHelperService();
 		const info = jwt.decodeToken(token);
-		if (info.role == "ROLE_ADMIN") {
+		if (info.role == "ROLE_TEACHER") {
 			return true;
 		}
 		return false;

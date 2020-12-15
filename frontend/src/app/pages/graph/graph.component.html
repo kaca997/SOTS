@@ -1,0 +1,47 @@
+<!-- <div style="background-color: burlywood;" id="my_dataviz"></div> -->
+<div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 10px;"> 
+      <form fxFlex [formGroup]="newProblemForm" xLayout="row" fxLayoutAlign="start start">
+            <mat-form-field style="max-height: 24px !important;" appearance="fill">
+                  <mat-label>Problem name</mat-label>
+                  <input matInput [formControl]="newProblemForm.controls['problemName']">
+            </mat-form-field>
+            <span>
+            <button mat-mini-fab color="primary"  [disabled]="!newProblemForm.valid" style="margin-left:10px;" (click)="addProblem() ; newProblemForm.reset()" >
+                  <mat-icon>plus_one</mat-icon>
+            </button>
+      </span>
+      </form>
+      <button mat-raised-button color="warn"  fxLayoutAlign="end start" [disabled]="(!this.selectedNode && !this.selectedLink)" style="margin-left:10px;" (click)="deleteProblem()" >
+            Delete
+      </button>
+</div>
+<div fxLayout="row">
+<svg id="graphContainer"
+      width="100%"
+      height="100%"
+      class="associations"
+      #graphContainer>
+</svg>
+</div>
+
+<div class="new-problem-card" >      
+      <form [formGroup]="domainForm" fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 10px;">
+            <mat-form-field style="max-height: 24px !important;" appearance="fill">
+                  <mat-label>Domain name</mat-label>
+                  <input matInput [formControl]="domainForm.controls['domainName']">
+            </mat-form-field>
+            <mat-form-field style="max-height: 24px !important; margin-left: 10px;" appearance="fill">
+                  <mat-label>Course</mat-label>
+                  <mat-select  [formControl]="domainForm.controls['courseName']">
+                  <mat-option *ngFor="let course of courses" [value]="course.id">
+                        {{course.name}}
+                  </mat-option>
+                  </mat-select>
+            </mat-form-field>
+            <!-- <span> -->
+            <button mat-raised-button color="primary" style="margin-left:10px; min-height: 40px;" [disabled]="!domainForm.valid" (click)="saveDomen()">
+                  Save
+            </button>
+            <!-- </span> -->
+      </form>
+</div>

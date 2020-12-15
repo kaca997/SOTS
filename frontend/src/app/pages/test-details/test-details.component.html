@@ -1,0 +1,53 @@
+<ng-container *ngIf="error; else elseTemplate">
+    <h2 style="text-align: center;">{{error}}</h2>
+</ng-container>
+<ng-template #elseTemplate>
+    <h1 style="text-align: center;">{{test.title}}</h1>
+    <div fxLayoutAlign="center stretch" fxLayout="column">
+        <mat-card class="card">
+            <mat-card-header fxLayoutAlign="center center">
+            <mat-card-title fxLayoutAlign="center center">{{test.sections[pageNumber].sectionTitle}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div style="margin: 15px;" *ngFor="let question of test.sections[pageNumber].questions; let i = index">
+                    <div style="margin-bottom: 10px;" fxLayout="row wrap">
+                        <strong>{{i+1}}. </strong>{{question.text}}
+                    </div>
+                    <div fxLayout="row wrap">
+                        <div *ngFor="let answer of question.answers">
+                            <div *ngIf="done || isTeacher" [ngClass]="{'correct': (answer.correct && answer.chosen), 'uncheckedCorr': answer.correct, 'incorrect' : true }">
+                                    <mat-checkbox style="margin: 10px;" [disabled]="true" [(ngModel)]="answer.chosen" class="example-margin" >{{answer.text}}</mat-checkbox>
+                            </div>
+                            <div *ngIf="!done && !isTeacher">
+                                <mat-checkbox style="margin: 10px;" [(ngModel)]="answer.chosen" class="example-margin" >{{answer.text}}</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+            <button *ngIf="!done && !isTeacher" [disabled] = "pageNumber != test.sections.length-1" mat-flat-button class="btn btn-primary btn-block" style="border-radius: 20px;" (click)="submitTest()">Submit test</button>
+        </mat-card>
+    </div>
+
+    <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+        <li [className]="pageNumber==0 ? 'page-item disabled' : 'page-item'">
+            <a class="page-link" href="javascript:void(0)" aria-label="Previous" (click)="previous()">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li [className]="i!=pageNumber ? 'page-item' : 'page-item active'" *ngFor="let section of test.sections; let i = index">
+            <a class="page-link" href="javascript:void(0)" (click)="setPage(i)">
+                {{i+1}} <span *ngIf="i==1" class="sr-only">(current)</span>
+            </a>
+        </li>
+        <li [className]="pageNumber==test.sections.length-1 ? 'page-item disabled' : 'page-item'">
+            <a class="page-link" href="javascript:void(0)" (click)="next()">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        </ul>
+    </nav>
+</ng-template>
