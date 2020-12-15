@@ -1,11 +1,13 @@
 package com.sots.project.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.sots.project.dto.CourseDTO;
 import com.sots.project.model.Course;
 import com.sots.project.model.Student;
 import com.sots.project.model.Teacher;
@@ -30,5 +32,19 @@ public class CourseService {
 		List<Course> courses  = courseRepository.findTeacherCourses(t.getId());
 		return courses;
 	}
+	
+	public List<CourseDTO> getWithoutDomain() {
+		
+		List<Course> teacherCurses  = this.getAllForTeacher();
+		List<CourseDTO> courses = new ArrayList<CourseDTO>();
+		for(Course c: teacherCurses) {
+			if(c.getDomain() == null) {
+				courses.add(new CourseDTO(c.getId(), c.getName()));
+			}
+		}
+		return courses;
+		
+	}
+
 
 }

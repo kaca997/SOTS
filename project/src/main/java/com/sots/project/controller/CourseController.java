@@ -38,4 +38,15 @@ public class CourseController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping("/getCoursesWithoutDomain")
+	public ResponseEntity<?> getWithoutDomain() {
+		try {
+			return new ResponseEntity<>(courseService.getWithoutDomain(), HttpStatus.OK);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 }
