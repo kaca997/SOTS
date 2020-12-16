@@ -87,7 +87,8 @@ public class KnowledgeSpaceService {
 		Collections.sort(listOfProblems);
 		
 		if (problems.size() != listOfProblems.size()) {
-			throw new InvalidDataException("Something went wrong");
+			return null;
+//			throw new InvalidDataException("Something went wrong");
 		}
 		
 		
