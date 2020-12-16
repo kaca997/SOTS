@@ -15,5 +15,11 @@ export class DomainService {
   creteDomain(domainDTO: any): Observable<any> {
 		let domainUrl =  "http://localhost:8080/domain/create";
 		return this.http.post(domainUrl, {domainName: domainDTO.domainName, courseId: domainDTO.courseId, problemList: domainDTO.problemList, relations: domainDTO.relations}, {headers: this.headers, responseType: 'text'});
-	}
+  }
+  
+  getDomain(id : number): Observable<any>{
+    let testUrl = `http://localhost:8080/domain/get/${id}`
+    return this.http.get(testUrl, {headers: this.headers});
+  }
+  
 }

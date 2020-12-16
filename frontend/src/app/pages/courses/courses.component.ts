@@ -55,4 +55,7 @@ export class CoursesComponent implements OnInit {
     this.router.navigate(['teacherTests', id]);
   }
   
+  showKnoledgeSpaces(id: number): void{
+    this.router.navigate(['knowledge-spaces', id])
+  }
 }

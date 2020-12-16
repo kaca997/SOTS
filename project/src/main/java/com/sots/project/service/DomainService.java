@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sots.project.dto.DomainDTO;
 import com.sots.project.dto.NewDomainDTO;
 import com.sots.project.dto.NewRelationDTO;
 import com.sots.project.model.Course;
@@ -35,12 +36,14 @@ public class DomainService {
 	private ProblemRepository problemRepository;
 	
 	public String save(NewDomainDTO domainDTO) throws InvalidDataException {
+		System.out.println(domainDTO);
 		Domain domain = new Domain();
 		domain.setName(domainDTO.getDomainName());
 		Course c;
 		try {
 			c = courseRepository.findById(domainDTO.getCourseId()).get();
 		}catch(Exception e){
+			
 			throw new InvalidDataException("Course not found!");
 		}
 		
@@ -65,12 +68,45 @@ public class DomainService {
 				from = problemRepository.findByNameAndDomain(relation.getSurmiseFrom(), domain.getId());
 				to = problemRepository.findByNameAndDomain(relation.getSurmiseTo(), domain.getId());
 			}catch(Exception e){
-				throw new InvalidDataException("Problem not found!");
+				e.printStackTrace();
+				return null;
+//				throw new InvalidDataException("Problem not found!");
 			}
 			relations.add(new Relation(from, to));
 		}
 		ks.setRelations(relations);
 		ks = ksRepository.save(ks);
 		return null;
+	}
+	public DomainDTO getDomain(Long id) throws InvalidDataException {
+		Domain d;
+		try {
+			d = domainRepository.findById(id).get();
+		}catch(Exception e){
+			throw new InvalidDataException("Domain not found!");
+		}
+		DomainDTO dto = new DomainDTO();
+		dto.setDomainName(d.getName());
+		
+		Course c = courseRepository.findCourseByDomain(d);
+		dto.setCourseName(c.getName());
+		for(Problem p : d.getListOfProblems()) {
+			dto.getProblems().add(p.getName());
+		}
+	
+		for(KnowledgeSpace ks : d.getKnowledgeSpaces()) {
+			if(ks.getKnowledgeSpaceType() == KnowledgeSpaceType.EXPECTED) {
+				for(Relation r : ks.getRelations()) {
+					dto.getExpectedKnowledgeSpace()
+					.add(new NewRelationDTO(r.getSurmiseFrom().getName(), r.getSurmiseTo().getName()));
+				}
+			}else {
+				for(Relation r : ks.getRelations()) {
+					dto.getRealKnowledgeSpace()
+					.add(new NewRelationDTO(r.getSurmiseFrom().getName(), r.getSurmiseTo().getName()));
+				}
+			}
+		}
+		return dto;
 	}
 }

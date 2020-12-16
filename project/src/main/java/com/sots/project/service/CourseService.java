@@ -30,6 +30,10 @@ public class CourseService {
 		
 		Teacher t = (Teacher) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List<Course> courses  = courseRepository.findTeacherCourses(t.getId());
+		for(Course c: courses) {
+			c.getDomain();
+		}
+		System.out.println(courses);
 		return courses;
 	}
 	

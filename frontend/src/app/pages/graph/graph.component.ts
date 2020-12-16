@@ -1,8 +1,4 @@
-import { Component, OnInit, ɵbypassSanitizationTrustResourceUrl } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { CourseService } from 'app/services/course.service';
-import { DomainService } from 'app/services/domain.service';
+import { AfterViewInit, Component, Input, OnInit, ɵbypassSanitizationTrustResourceUrl } from '@angular/core';
 import * as d3 from 'd3';
 import { ToastrService } from 'ngx-toastr';
 
@@ -11,28 +7,13 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './graph.component.html',
   styleUrls: ['./graph.component.scss']
 })
-export class GraphComponent implements OnInit {
-  
-  // svg :any
-  // margin = {top: 10, right: 30, bottom: 30, left: 40}
-  // width = 400 - this.margin.left - this.margin.right
-  // height = 400 - this.margin.top - this.margin.bottom;
-  // link : any
-  // node: any
+export class GraphComponent implements AfterViewInit {
 
   cyclicGraph = false;
-  courses: { id: number, name: string }[] = [
-    { "id": 0, "name": "Available" },
-    { "id": 1, "name": "Ready" },
-    { "id": 2, "name": "Started" }
-];
 
-
-
-  newProblemForm : FormGroup;
-  domainForm : FormGroup;
-  width = 1050;
-  height = 400;
+  @Input() width;
+  @Input() height;
+  @Input() idd;
   colors = d3.scaleOrdinal(d3.schemeCategory10);
 
   svg: any;
@@ -48,29 +29,22 @@ export class GraphComponent implements OnInit {
   mousedownNode = null;
   mouseupNode = null;
 
-  nodes = [
-    { id: "Root Problem", reflexive: false }
-  ];
-  links = [
+  @Input() nodes: Array<any>;
+  @Input() readOnly = false;
+  // nodes = [
+  //   { id: "Root Problem", reflexive: false }
+  // ];
+  @Input() links : Array<any>;
     // { source: this.nodes[0], target: this.nodes[1], left: false, right: true },
     // { source: this.nodes[1], target: this.nodes[2], left: false, right: true }
-  ];
 
-  constructor(private fb: FormBuilder, private cs: CourseService, private ds: DomainService, private router : Router, private toastr : ToastrService) { 
-    this.newProblemForm = this.fb.group({
-      problemName : [null, Validators.required]
-    });
+  constructor(private toastr: ToastrService) {}
 
-    this.domainForm = this.fb.group({
-      domainName : [null, Validators.required],
-      courseName: [null, Validators.required]
-    })
-  }
+  ngAfterViewInit() {
 
-  ngOnInit() {
-    this.getCourses()
-
-    this.svg = d3.select('#graphContainer')
+    console.log(this.links)
+    console.log(this.nodes)
+    this.svg = d3.select(`#${this.idd}`)
       .attr('oncontextmenu', 'return false;')
       .attr('width', this.width)
       .attr('height', this.height);
@@ -85,16 +59,19 @@ export class GraphComponent implements OnInit {
     // init D3 drag support
     this.drag = d3.drag()
       .on('start', (event, d: any) => {
+        if(this.readOnly) return;
         if (!event.active) this.force.alphaTarget(0.3).restart();
 
         d.fx = d.x;
         d.fy = d.y;
       })
       .on('drag', (event,d: any) => {
+        if(this.readOnly) return;
         d.fx = event.x;
         d.fy = event.y;
       })
       .on('end', (event,d: any) => {
+        if(this.readOnly) return;
         if (!event.active) this.force.alphaTarget(0.3);
 
         d.fx = null;
@@ -137,9 +114,11 @@ export class GraphComponent implements OnInit {
     this.circle = this.svg.append('svg:g').selectAll('g');
 
     // app starts here
+    if(!this.readOnly){
     this.svg.on('mousedown', (event,dataItem, value, source) => this.mousedown(event,dataItem, value, source))
       .on('mousemove', (event, dataItem) => this.mousemove(event,dataItem))
       .on('mouseup', (dataItem) => this.mouseup(dataItem));
+    }
     this.restart(null);
   }
 
@@ -197,6 +176,7 @@ export class GraphComponent implements OnInit {
       .style('marker-start', (d) => d.left ? 'url(#start-arrow)' : '')
       .style('marker-end', (d) => d.right ? 'url(#end-arrow)' : '')
       .on('mousedown', (event, d) => {
+        if(this.readOnly) return;
         if (event.ctrlKey) return;
 
         // select link
@@ -229,16 +209,19 @@ export class GraphComponent implements OnInit {
       .style('stroke', (d) => d3.rgb(this.colors('red')).darker().toString())
       .classed('reflexive', (d) => d.reflexive)
       .on('mouseover', function (d) {
+        if(this.readOnly) return;
         if (!this.mousedownNode || d === this.mousedownNode) return;
         // enlarge target node
         d3.select(this).attr('transform', 'scale(1.1)');
       })
       .on('mouseout', function (d) {
+        if(this.readOnly) return;
         if (!this.mousedownNode || d === this.mousedownNode) return;
         // unenlarge target node
         d3.select(this).attr('transform', '');
       })
       .on('mousedown', (event, d) => {
+        if(this.readOnly) return;
         if (event.ctrlKey) return;
 
         // select node
@@ -255,7 +238,7 @@ export class GraphComponent implements OnInit {
         this.restart(event);
       })
       .on('mouseup', (event, dataItem: any) => {
-        debugger;
+        if(this.readOnly) return;
         if (!this.mousedownNode) return;
 
         // needed by FF
@@ -379,42 +362,6 @@ export class GraphComponent implements OnInit {
     }
   }
 
-
-  getCourses(): any{
-    this.cs.getCoursesWithoutDomain().subscribe(
-      courses => {
-        this.courses = courses;
-        console.log(this.courses)
-      },
-      error => {
-        console.log(error);
-        this.toastr.error(error.error);
-      }
-    );
-  }
-
-  addProblem(){
-    const id = this.newProblemForm.value.problemName;
-    let check = false
-    this.nodes.forEach(function (node) {
-      if(node.id === id){
-        console.log(node)
-        check = true
-
-        return
-      }
-    });
-    if (check){
-      this.toastr.warning("Problem with that name already exists!")
-      return
-    }
-    console.log("E")
-    const node = { id: id,  reflexive: false};
-    this.nodes.push(node);
-    this.newProblemForm.value.problemName = "";
-    this.restart(null);
-  }
-
   findParentsForNode(node){
     var parentsLinks = this.links.filter(function (link) {
       // console.log(link)
@@ -466,48 +413,5 @@ export class GraphComponent implements OnInit {
       }
       
     });;
-  }
-
-  deleteProblem(){
-    if (this.selectedNode) {
-      if(this.selectedNode.id === 'Root Problem'){
-        this.toastr.warning("You can not delete root problem")
-        return;
-      }
-      this.nodes.splice(this.nodes.indexOf(this.selectedNode), 1);
-      this.spliceLinksForNode(this.selectedNode);
-    } else if (this.selectedLink) {
-      this.links.splice(this.links.indexOf(this.selectedLink), 1);
-    }
-    this.selectedLink = null;
-    this.selectedNode = null;
-    this.restart(event);
-  }
-
-  saveDomen(){
-    console.log(this.links)
-    let domain : any = {}
-    domain.domainName = this.domainForm.value.domainName;
-    domain.courseId = +this.domainForm.value.courseName;
-    domain.problemList = this.nodes.map(node => node.id);
-    let relations = [] 
-    this.links.forEach(link =>{
-      let relation : any ={}
-      relation.surmiseFrom = link.source.id;
-      relation.surmiseTo = link.target.id;
-      relations.push(relation)
-    })
-    domain.relations = relations
-    console.log(domain)
-    this.ds.creteDomain(domain).subscribe(
-			result => {
-				this.toastr.success('Domain successfully added!');
-			},
-			error => {
-				console.log(error);
-        this.toastr.error(error.error);
-			}
-		);
-  
-  }
+  }  
 }
