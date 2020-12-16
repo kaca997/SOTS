@@ -1,0 +1,12 @@
+<h2 style="text-align: center;">Domain: {{domainName}}, Course: {{courseName}}</h2>
+<div *ngIf="this.dataLoaded === true" fxLayout="row ">
+    <div fxFlex= 48 fxLayout="column" fxLayoutAlign="center center">
+        <h3>Expected knowledge space</h3>
+        <app-graph [readOnly]=true [idd]="idd1"  [nodes]="nodes" [links]="expectedLinks" [width] = 520 [height] = 420></app-graph>
+    </div>
+    <div fxFlex = 4></div>
+    <div fxFlex= 48 fxLayout="column" fxLayoutAlign="center center">
+        <h3>Real knowledge space</h3>
+        <app-graph [readOnly]=true [idd]="idd2"  [nodes]="nodes" [links]="realLinks" [width] = 520 [height] = 420></app-graph>
+    </div>
+</div>
