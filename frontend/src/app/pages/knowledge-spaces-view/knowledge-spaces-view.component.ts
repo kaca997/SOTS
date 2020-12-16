@@ -18,6 +18,7 @@ export class KnowledgeSpacesViewComponent implements OnInit {
   expectedLinks = [];
   idd1 = "aaa"
   idd2 = "beee"
+  realKS: any;
 
   dataLoaded = false;
   
@@ -37,16 +38,30 @@ export class KnowledgeSpacesViewComponent implements OnInit {
     }
 }
 
+  getRealKS():void {
+     this.ds.getRealKS(this.domainId).subscribe(
+          ks => {
+            console.log(ks) 
+            this.realKS = ks
+          },
+          error => {
+            console.log(console.error);
+          });
+        
+  }
+
   getDomain(): void{
+    // this.getRealKS();
+
     this.ds.getDomain(this.domainId).subscribe(
       domain => {
+        console.log(domain)
         this.domainName = domain.domainName;
         this.courseName = domain.courseName;
         domain.problems.forEach(problem => {
           const node = { id: problem,  reflexive: false};
           this.nodes.push(node);
         });
-        
         
         domain.expectedKnowledgeSpace.forEach(relation => {
           var i = this.findNode(relation.surmiseFrom)

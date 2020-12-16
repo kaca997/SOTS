@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/services/auth.service';
 import { CourseService } from 'app/services/course.service';
+import { DomainService } from 'app/services/domain.service';
 import { TestService } from 'app/services/test.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -17,6 +18,7 @@ export class CoursesComponent implements OnInit {
   courses :Array<any> = []
   constructor(private courseService: CourseService,
     private autService: AuthenticationService,
+    private ds: DomainService,
     private toastr: ToastrService,
     private router: Router,
     private testService: TestService) { }
@@ -43,6 +45,18 @@ export class CoursesComponent implements OnInit {
       }
     );
   }
+
+  getRealKS(domainId: number):void {
+    this.ds.getRealKS(domainId).subscribe(
+         ks => {
+           console.log(ks) 
+         },
+         error => {
+           console.log(console.error);
+         });
+       
+ }
+
   testsToDo(id:number): void{
     this.router.navigate(['testsToDo', id]);
   }

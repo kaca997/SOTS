@@ -75,6 +75,7 @@ public class KnowledgeSpaceService {
 		if (problems.isEmpty()) {
 			throw new InvalidDataException("Problems aren't defined.");
 		}
+		
 		Set<Long> problemNumbers = new HashSet<Long>();
 		
 		for (RelationDTO rel : body) {

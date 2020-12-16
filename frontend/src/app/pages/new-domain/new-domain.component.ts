@@ -96,6 +96,7 @@ export class NewDomainComponent implements OnInit {
 		);
   }
 
+
   checkSelectedLinkOrNode(){
     if(this.child === undefined){
       return true;
