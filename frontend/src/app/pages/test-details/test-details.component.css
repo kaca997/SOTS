@@ -1,22 +1,22 @@
-.correct .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+::ng-deep .correct .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
     opacity: 0.03 !important;
     background-color: green !important;
   }
 
-.correct .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+::ng-deep.correct .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
     background-color: green !important;
   }
 
 
-.incorrect .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+::ng-deep.incorrect .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
     opacity: 0.03 !important;
     background-color: red;
   }
 
-.incorrect .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+::ng-deep .incorrect .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
     background-color: red;
   }
 
-.uncheckedCorr mat-checkbox .mat-checkbox-frame { border-color: green !important; }
+::ng-deep .uncheckedCorr mat-checkbox .mat-checkbox-frame { border-color: green !important; }
 
-.uncheckedIncorr mat-checkbox .mat-checkbox-frame { border-color: red !important; }
+::ng-deep .uncheckedIncorr mat-checkbox .mat-checkbox-frame { border-color: red !important; }
