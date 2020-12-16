@@ -25,4 +25,9 @@ export class CourseService {
 		const courseUrl = `http://localhost:8080/course/getCoursesWithoutDomain`;
 		return this.http.get(courseUrl, {headers: this.headers});
   }
+
+  getProblemsByCourse(id: number) : Observable<any> { 
+    const courseUrl = `http://localhost:8080/course/getProblemsByCourse/${id}`;
+		return this.http.get(courseUrl, {headers: this.headers});
+  }
 }
