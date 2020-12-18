@@ -1,5 +1,6 @@
 package com.sots.project.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -33,7 +34,7 @@ public class Domain {
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "domain_id")
-	private List<Problem> listOfProblems;
+	private List<Problem> listOfProblems = new ArrayList<>();
 
 	public Domain() {
 		super();

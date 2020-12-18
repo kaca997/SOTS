@@ -75,6 +75,7 @@ public class KnowledgeSpaceService {
 		if (problems.isEmpty()) {
 			throw new InvalidDataException("Problems aren't defined.");
 		}
+		
 		Set<Long> problemNumbers = new HashSet<Long>();
 		
 		for (RelationDTO rel : body) {
@@ -86,7 +87,8 @@ public class KnowledgeSpaceService {
 		Collections.sort(listOfProblems);
 		
 		if (problems.size() != listOfProblems.size()) {
-			throw new InvalidDataException("Something went wrong");
+			return null;
+//			throw new InvalidDataException("Something went wrong");
 		}
 		
 		

@@ -9,5 +9,6 @@
         <button *ngIf="!isTeacher" mat-flat-button class="btn-primary btn-block" style="border-radius: 20px;" (click)="testsToDo(course.id)">Tests to do</button>
         <button *ngIf="!isTeacher" mat-flat-button class="btn-dark btn-block" style="border-radius: 30px;" (click)="doneTests(course.id)">Tests done</button>
         <button *ngIf="isTeacher" mat-flat-button class="btn-dark btn-block" style="border-radius: 30px;" (click)="myTests(course.id)">Tests</button>
+        <button *ngIf="isTeacher && (course.domain != null)" mat-flat-button class="btn-dark btn-block" style="border-radius: 30px;" (click)="showKnoledgeSpaces(course.domain.id)">Knowledge spaces</button>
     </mat-card>
 </div>

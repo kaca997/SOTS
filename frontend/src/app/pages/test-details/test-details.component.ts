@@ -8,7 +8,6 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-test-details',
   templateUrl: './test-details.component.html',
   styleUrls: ['./test-details.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class TestDetailsComponent implements OnInit {
 

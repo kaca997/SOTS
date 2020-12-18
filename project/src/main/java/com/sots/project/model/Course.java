@@ -40,9 +40,9 @@ public class Course {
 	@JsonBackReference(value="course-test")
 	private List<Test> tests;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "domain_id")
-	@JsonIgnore
+//	@JsonIgnore
 	private Domain domain;
 
 	public Course() {

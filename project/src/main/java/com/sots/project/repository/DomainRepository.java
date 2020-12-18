@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.sots.project.model.Domain;
 
-public interface DomainRepository  extends JpaRepository<Domain, Long> {
+public interface DomainRepository extends JpaRepository<Domain, Long> {
 
 }

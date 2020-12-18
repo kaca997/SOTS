@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.sots.project.model.Course;
+import com.sots.project.model.Domain;
 
 public interface CourseRepository extends JpaRepository<Course, Long>{
 	
@@ -14,5 +15,7 @@ public interface CourseRepository extends JpaRepository<Course, Long>{
 	
 	@Query(value = "SELECT cr.* FROM course cr JOIN teacher_course sc ON sc.course_id = cr.id WHERE sc.teacher_id = ?1", nativeQuery = true)	
 	List<Course> findTeacherCourses(Long teacherID);
+	
+	Course findCourseByDomain(Domain d);
 
 }
