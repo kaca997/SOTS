@@ -41,11 +41,11 @@ export class KnowledgeSpacesViewComponent implements OnInit {
   getRealKS():void {
      this.ds.getRealKS(this.domainId).subscribe(
           ks => {
-            console.log(ks) 
+            // console.log(ks) 
             this.realKS = ks
           },
           error => {
-            console.log(console.error);
+            // console.log(console.error);
           });
         
   }
@@ -55,7 +55,7 @@ export class KnowledgeSpacesViewComponent implements OnInit {
 
     this.ds.getDomain(this.domainId).subscribe(
       domain => {
-        console.log(domain)
+        // console.log(domain)
         this.domainName = domain.domainName;
         this.courseName = domain.courseName;
         domain.problems.forEach(problem => {
@@ -78,9 +78,9 @@ export class KnowledgeSpacesViewComponent implements OnInit {
         });
 
         this.dataLoaded = true;
-        console.log("Links: ", this.expectedLinks)
-        console.log("Real: ", this.realLinks)
-        console.log("N:", this.nodes);
+        // console.log("Links: ", this.expectedLinks)
+        // console.log("Real: ", this.realLinks)
+        // console.log("N:", this.nodes);
         
       },
       error => {
