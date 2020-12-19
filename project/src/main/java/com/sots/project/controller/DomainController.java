@@ -22,6 +22,8 @@ import com.sots.project.service.DomainService;
 import com.sots.project.service.InvalidDataException;
 import com.sots.project.service.KnowledgeSpaceService;
 
+import net.minidev.json.JSONObject;
+
 @RestController
 @RequestMapping("/domain")
 public class DomainController {
@@ -58,10 +60,11 @@ public class DomainController {
 			
 			KnowledgeSpace ks = knowledgeSpaceService.getRealKSByDomain(id);
 			if (ks == null) {
+				JSONObject o = knowledgeSpaceService.getMatrixForRealKS(id);
 				HttpHeaders httpHeaders = new HttpHeaders();
 			    httpHeaders.set("Authorization", token);
-				HttpEntity<String> httpEntity = new HttpEntity <String> (httpHeaders);
-				ResponseEntity<RelationDTO[]> message = restTemplate.getForEntity("http://localhost:5000/getRealKS", RelationDTO[].class);
+			    System.out.println(o.toJSONString());
+				ResponseEntity<RelationDTO[]> message = restTemplate.postForEntity("http://localhost:5000/getRealKS",  o.toJSONString(),RelationDTO[].class);
 				
 				knowledgeSpaceService.createRealKS(message.getBody(), id);
 			}
