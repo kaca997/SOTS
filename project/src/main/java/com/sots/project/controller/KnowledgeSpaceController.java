@@ -1,11 +1,10 @@
 package com.sots.project.controller;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +18,10 @@ import org.springframework.web.client.RestTemplate;
 
 import com.sots.project.dto.KnowledgeSpaceDTO;
 import com.sots.project.dto.RelationDTO;
-import com.sots.project.model.KnowledgeSpace;
 import com.sots.project.service.InvalidDataException;
 import com.sots.project.service.KnowledgeSpaceService;
+
+import net.minidev.json.JSONObject;
 
 @RestController
 @RequestMapping("/knowledgeSpace")
@@ -48,22 +48,12 @@ public class KnowledgeSpaceController {
 	@GetMapping("/sendReqRealKS/{domainId}")
 	public ResponseEntity<?> getRealKS(@PathVariable Long domainId, @RequestHeader(value="Authorization") String token) {
 		try {
-			KnowledgeSpace ks = knowledgeSpaceService.getRealKSByDomain(domainId);
-			if (ks != null) {
-				return new ResponseEntity<>(ks, HttpStatus.OK);
-			}
-			
+			JSONObject o = knowledgeSpaceService.getMatrixForRealKS(domainId);
 			HttpHeaders httpHeaders = new HttpHeaders();
 		    httpHeaders.set("Authorization", token);
-			HttpEntity<String> httpEntity = new HttpEntity <String> (httpHeaders);
-			ResponseEntity<RelationDTO[]> message = restTemplate.getForEntity("http://localhost:5000/getRealKS", RelationDTO[].class);
-			System.out.println(message);
-			System.out.println(message.getStatusCodeValue());
-			System.out.println(message.getStatusCode());
-			
-			KnowledgeSpace knowSp = knowledgeSpaceService.createRealKS(message.getBody(), domainId);
-			
-			return new ResponseEntity<>(knowSp, HttpStatus.OK);
+		    System.out.println(o.toJSONString());
+			ResponseEntity<RelationDTO[]> message = restTemplate.postForEntity("http://localhost:5000/getRealKS",  o.toJSONString(),RelationDTO[].class);
+			return new ResponseEntity<>(message, HttpStatus.OK);
 		} catch (InvalidDataException e) { 
 			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

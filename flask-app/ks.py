@@ -5,11 +5,12 @@ sys.path.append('learning_spaces/')
 from learning_spaces.kst import iita
 
 
-from flask import Flask
-from flask_restful import Resource, Api
+from flask import Flask, request
+from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
 api = Api(app)
+parser = reqparse.RequestParser()
 
 class CreateKS(Resource):
     def get(self):
@@ -25,6 +26,20 @@ class CreateKS(Resource):
         
         return list
 
+    def post(self):
+        json_data = request.get_json(force=True)
+        dataframe = pd.DataFrame.from_dict(json_data)
+        print(dataframe)
+        list = []
+        response = iita(dataframe, v=1)
+        print(response)
+
+        for a,b  in response["implications"]:
+            list.append({"orderNum1" : a,
+                        "orderNum2" : b})
+
+        
+        return list
 api.add_resource(CreateKS, '/getRealKS')
 
 
