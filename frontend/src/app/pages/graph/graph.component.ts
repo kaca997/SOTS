@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 export class GraphComponent implements AfterViewInit {
 
   cyclicGraph = false;
+  transitivity = false;
 
   @Input() width;
   @Input() height;
@@ -42,6 +43,7 @@ export class GraphComponent implements AfterViewInit {
 
   ngAfterViewInit() {
 
+    this.checkLinks()
     console.log(this.links)
     console.log(this.nodes)
     this.svg = d3.select(`#${this.idd}`)
@@ -59,19 +61,19 @@ export class GraphComponent implements AfterViewInit {
     // init D3 drag support
     this.drag = d3.drag()
       .on('start', (event, d: any) => {
-        if(this.readOnly) return;
+        // if(this.readOnly) return;
         if (!event.active) this.force.alphaTarget(0.3).restart();
 
         d.fx = d.x;
         d.fy = d.y;
       })
       .on('drag', (event,d: any) => {
-        if(this.readOnly) return;
+        // if(this.readOnly) return;
         d.fx = event.x;
         d.fy = event.y;
       })
       .on('end', (event,d: any) => {
-        if(this.readOnly) return;
+        // if(this.readOnly) return;
         if (!event.active) this.force.alphaTarget(0.3);
 
         d.fx = null;
@@ -153,9 +155,14 @@ export class GraphComponent implements AfterViewInit {
 
   // update graph (called when needed)
   restart(event) {
+
+      // this.checkLinks();
+    
     // path (link) group
     // console.log(this.nodes)
     // console.log(this.links)
+        // console.log(this.links)
+    // this.links = okLinks;
     this.path = this.path.data(this.links);
 
     // update existing links
@@ -256,11 +263,17 @@ export class GraphComponent implements AfterViewInit {
         // unenlarge target node
         d3.select(event.currentTarget).attr('transform', '');
 
-        this.findParentsForNode(this.mousedownNode)
+        this.findParentsForNodes([this.mousedownNode], this.mouseupNode, this.links)
         if(this.cyclicGraph === true){
-          console.log("Greska")
           this.cyclicGraph = false
           this.toastr.warning("Graph can not be cyclic!")
+          return
+        }
+
+        this.findChildrenForNodes([this.mousedownNode], this.mouseupNode, this.links)
+        if(this.transitivity === true){
+          this.transitivity = false
+          this.toastr.warning("Graph is transitive!")
           return
         }
         // add link to graph (update if exists)
@@ -270,8 +283,8 @@ export class GraphComponent implements AfterViewInit {
         // const target = isRight ? this.mouseupNode : this.mousedownNode;
         const source = this.mousedownNode
         const target = this.mouseupNode
-        console.log("Source: ", source);
-        console.log("Target: ", target);
+        // console.log("Source: ", source);
+        // console.log("Target: ", target);
         if(target.id == "Root Problem"){
           this.toastr.warning("You can not add link to root problem")
           return
@@ -282,6 +295,7 @@ export class GraphComponent implements AfterViewInit {
           // link.right = isRight
         } else {
           this.links.push({ source, target, left: false, right: true});
+          this.checkLinks();
         }
 
         // select new link
@@ -335,12 +349,6 @@ export class GraphComponent implements AfterViewInit {
   }
 
   mouseup(source: any) {
-    // console.log("up : ", this.mouseupNode)
-    // if(this.cyclicGraph){
-    //   console.log("Ciklicnoooo")
-    // }else{
-    //   console.log("Mozeee")
-    // }
     if (this.mousedownNode) {
       // hide drag line
       this.dragLine
@@ -362,56 +370,109 @@ export class GraphComponent implements AfterViewInit {
     }
   }
 
-  findParentsForNode(node){
-    var parentsLinks = this.links.filter(function (link) {
-      // console.log(link)
-      // console.log("Node",  node)
-      // console.log("Node id",  node.id)
-      // // console.log(link.target.id)
-      return link.target.id === node.id;
-    });
-    var parents = parentsLinks.map(link => link.source )
-    console.log(parents)
-    if(parents.length === 0){
-      return
-    }else{
-      this.checkParents(parents)
-      if(this.cyclicGraph === true){
-        return
-      }else{
-        this.findParentsForNodes(parents)
-      }
-    }
-  }
-
-  findParentsForNodes(nodes){
+  findParentsForNodes(nodes, mainNode, links){
     var parents = []
     nodes.forEach(node => {
-      var parentsLinks = this.links.filter(function (link) {
+      var parentsLinks = links.filter(function (link) {
         return link.target.id === node.id;
       });
       parents = parentsLinks.map(link => link.source )
-      console.log("Parents: ", parents)
+      // console.log("Parents: ", parents)
     });
     if(parents.length === 0){
       return
     }else{
-      this.checkParents(parents)
+      this.checkParents(parents, mainNode)
       if(this.cyclicGraph === true){
         return
       }else{
-        this.findParentsForNodes(parents)
+        this.findParentsForNodes(parents, mainNode, links)
       }
     }
   }
 
-  checkParents(parents){
+  checkParents(parents, mainNode){
     parents.forEach(parent => {
-      if(parent.id == this.mouseupNode.id){
+      if(parent.id == mainNode.id){
         this.cyclicGraph = true;
         return;
-      }
-      
+      }     
     });;
   }  
+
+  findChildrenForNodes(nodes, mainNode, links){
+    var children = []
+    nodes.forEach(node => {
+      var childrenLinks = links.filter(function (link) {
+        return link.source.id === node.id;
+      });
+      console.log("DECA: ", childrenLinks)
+      children = childrenLinks.map(link => link.target )
+      console.log("DECA CVOROVI:", children)
+      if(children.length === 0){
+        return
+      }else{
+        this.checkChildren(children, mainNode)
+        if(this.transitivity === true){
+          return
+        }else{
+          this.findChildrenForNodes(children, mainNode, links)
+        }
+      }
+      // console.log("Parents: ", parents)
+    });
+  }
+
+  checkChildren(children, mainNode){
+    // console.log("main ",mainNode)
+    children.forEach(child => {
+      console.log("GLAVNI", mainNode)
+      console.log("Provera", child)
+      if(child.id == mainNode.id){
+        this.transitivity = true;
+        return;
+      }     
+    });;
+  } 
+  checkLinks(){
+    let okLinks = this.links
+    this.links = []
+    let i
+    let link
+    let checkLinks
+    console.log("Ok links", okLinks)
+    for(i=0; i<okLinks.length; i++){
+      link = okLinks[i]
+      checkLinks = okLinks.filter(obj => obj !== link);
+      console.log("Check: ", checkLinks)
+      console.log("Link, ",link)
+      // let mouseDown = link.source
+      // let mouseUp = link.target
+      // this.findParentsForNodes([link.source], link.target, checkLinks)
+      this.findChildrenForNodes([link.source], link.target, checkLinks)
+      if(this.cyclicGraph === true || this.transitivity === true){
+        // // this.links.splice(link);
+        console.log("Remove ciclyc")
+        this.transitivity = false; 
+        this.cyclicGraph = false;
+      }else{
+        console.log("OKK", link)
+         this.links.push(link)
+      }
+    }
+  }
+  
+  deleteProblem(){
+    if (this.selectedNode) {
+      this.nodes.splice(this.nodes.indexOf(this.selectedNode), 1);
+      this.spliceLinksForNode(this.selectedNode);
+    } else if (this.selectedLink) {
+      console.log("Linkovi", this.links)
+      this.links.splice(this.links.indexOf(this.selectedLink), 1);
+      console.log(this.links)
+    }
+    this.selectedLink = null;
+    this.selectedNode = null;
+    this.restart(event);
+  }
 }

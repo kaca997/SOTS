@@ -111,15 +111,18 @@ export class NewDomainComponent implements OnInit {
 
 
   deleteProblem(){
-    if (this.child.selectedNode) {
-      this.nodes.splice(this.nodes.indexOf(this.child.selectedNode), 1);
-      this.child.spliceLinksForNode(this.child.selectedNode);
-    } else if (this.child.selectedLink) {
-      this.links.splice(this.links.indexOf(this.child.selectedLink), 1);
-    }
-    this.child.selectedLink = null;
-    this.child.selectedNode = null;
-    this.child.restart(event);
+    this.child.deleteProblem()
+  //   if (this.child.selectedNode) {
+  //     this.nodes.splice(this.nodes.indexOf(this.child.selectedNode), 1);
+  //     this.child.spliceLinksForNode(this.child.selectedNode);
+  //   } else if (this.child.selectedLink) {
+  //     console.log("Linkovi", this.links)
+  //     this.links.splice(this.links.indexOf(this.child.selectedLink), 1);
+  //     console.log(this.links)
+  //   }
+  //   this.child.selectedLink = null;
+  //   this.child.selectedNode = null;
+  //   this.child.restart(event);
+  // }
   }
-
 }
