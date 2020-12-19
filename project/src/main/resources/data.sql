@@ -33,8 +33,9 @@ INSERT INTO `answer` VALUES (1,true,'Tacno',1),(2,false,'Netacno1',1),
 (8,true,'Tacno',4),(9,false,'Netacno1',4),
 (10,true,'Tacno',5),(11,false,'Netacno1',5),(12,true,'Tacno1',5),(13,true,'Tacno2',5);
 
-INSERT INTO `chosen_answer` VALUES (1, 1, 2), (2, 3, 2), (3, 5, 2), (4, 6, 2), (5, 8, 2), (6, 10, 2), (7, 12, 2),
-(8, 1, 3), (9, 5, 3), (10, 6, 3), (11, 8, 3), (12, 9, 3), (13, 11, 3);
+INSERT INTO `chosen_answer` VALUES (1, 1, 2), (2, 5, 2), (3, 5, 2), (4, 6, 2), (5, 9, 2), (6, 10, 2), (7, 12, 2),
+(8, 1, 3), (9, 5, 3), (10, 7, 3), (11, 8, 3), (13, 11, 3), (14, 12, 3), (15, 13, 3);
+
 
 
 

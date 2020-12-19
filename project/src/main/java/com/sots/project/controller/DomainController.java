@@ -65,7 +65,8 @@ public class DomainController {
 			    httpHeaders.set("Authorization", token);
 			    System.out.println(o.toJSONString());
 				ResponseEntity<RelationDTO[]> message = restTemplate.postForEntity("http://localhost:5000/getRealKS",  o.toJSONString(),RelationDTO[].class);
-				
+//				ResponseEntity<RelationDTO[]> message = restTemplate.getForEntity("http://localhost:5000/getRealKS",  RelationDTO[].class);
+
 				knowledgeSpaceService.createRealKS(message.getBody(), id);
 			}
 			

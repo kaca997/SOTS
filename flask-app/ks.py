@@ -16,7 +16,7 @@ class CreateKS(Resource):
     def get(self):
         data_frame = load_data("pisa.txt")
         list = []
-        response = iita(data_frame, v=2)
+        response = iita(data_frame, v=1)
         print(response)
 
         for a,b  in response["implications"]:
