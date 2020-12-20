@@ -105,7 +105,8 @@ export class TestDetailsComponent implements OnInit {
       test => {
         this.toastr.success("Test submited! See your results!");
         this.test = test;
-        this.done = true;
+        console.log(test)
+        this.router.navigate(['doneTestDetails', this.test.doneTestId]);
         this.pageNumber = 0;
       },
       error => {

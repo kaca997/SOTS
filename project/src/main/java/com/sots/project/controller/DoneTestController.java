@@ -68,7 +68,7 @@ public class DoneTestController {
 			
 			knowledgeSpaceService.createRealKSTest(message.getBody(), d.getTestId());
 			
-			return new ResponseEntity<>(dto, HttpStatus.OK);
+			return new ResponseEntity<>(d, HttpStatus.OK);
 		}
 		catch (InvalidDataException e) {
 			e.printStackTrace();
