@@ -93,6 +93,13 @@ export class TestPreviewComponent  implements OnInit {
   }
 
   testDetailsTeacher(id: number) : void{
-    this.router.navigate(['testDetailsTeacher', id]);
+    // let url = "http://localhost:4200/testDetailsTeacher/1"
+    // this.router.navigateByUrl(url)
+    // this.router.navigate(['testDetailsTeacher', id]);
+    // window.location.href = `#/testDetailsTeacher/${id}`;
+    // window.location.reload();
+    // this.router.navigate(['testDetailsTeacher', id]);
+    window.location.href = `#/testDetailsTeacher/${id}`;
+    window.location.reload();
   }
 }

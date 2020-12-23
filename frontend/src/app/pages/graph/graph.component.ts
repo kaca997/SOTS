@@ -378,17 +378,17 @@ export class GraphComponent implements AfterViewInit {
       });
       parents = parentsLinks.map(link => link.source )
       // console.log("Parents: ", parents)
-    });
-    if(parents.length === 0){
-      return
-    }else{
-      this.checkParents(parents, mainNode)
-      if(this.cyclicGraph === true){
+      if(parents.length === 0){
         return
       }else{
-        this.findParentsForNodes(parents, mainNode, links)
+        this.checkParents(parents, mainNode)
+        if(this.cyclicGraph === true){
+          return
+        }else{
+          this.findParentsForNodes(parents, mainNode, links)
+        }
       }
-    }
+    });
   }
 
   checkParents(parents, mainNode){
