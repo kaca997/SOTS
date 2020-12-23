@@ -136,10 +136,19 @@ public class KnowledgeSpaceService {
 			}
 		}
 		
-		KnowledgeSpace knowledgeSpace = new KnowledgeSpace(KnowledgeSpaceType.REAL, relations, d);
-		d.getKnowledgeSpaces().add(knowledgeSpace);
 		
-		knowledgeSpaceRepository.save(knowledgeSpace);
+		KnowledgeSpace knowledgeSpace = getRealKSByDomain(domainId);
+		if (knowledgeSpace != null) {
+			knowledgeSpace.setRelations(relations);
+			knowledgeSpace.setDomain(d);
+			knowledgeSpaceRepository.save(knowledgeSpace);
+			domainRepository.save(d);
+			return knowledgeSpace;
+		}
+		KnowledgeSpace knowledgeSpace2 = new KnowledgeSpace(KnowledgeSpaceType.REAL, relations, d);
+		d.getKnowledgeSpaces().add(knowledgeSpace2);
+		
+		knowledgeSpaceRepository.save(knowledgeSpace2);
 		domainRepository.save(d);
 		
 		return knowledgeSpace;

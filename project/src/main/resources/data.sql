@@ -20,7 +20,7 @@ INSERT INTO `teacher_course` VALUES (2,1),(2,2),(2,3),(2,4);
 
 INSERT INTO `test` VALUES (1,true,'Test iz mate',1,2),(2,true,'Test iz mate2',1,2);
 
-INSERT INTO `done_test` VALUES (1,1,2),(2,1,1), (3,3,1) ;
+INSERT INTO `done_test` VALUES (1,1,2),(2,1,1), (3,3,1), (4,1,1), (5,1,1) ;
 
 INSERT INTO `section` VALUES (1,'Polinomi',1),(2,'Integrali',1);
 
@@ -33,8 +33,10 @@ INSERT INTO `answer` VALUES (1,true,'Tacno',1),(2,false,'Netacno1',1),
 (8,true,'Tacno',4),(9,false,'Netacno1',4),
 (10,true,'Tacno',5),(11,false,'Netacno1',5),(12,true,'Tacno1',5),(13,true,'Tacno2',5);
 
-INSERT INTO `chosen_answer` VALUES (1, 1, 2), (2, 5, 2), (3, 5, 2), (4, 6, 2), (5, 9, 2), (6, 10, 2), (7, 12, 2),
-(8, 1, 3), (9, 5, 3), (10, 7, 3), (11, 8, 3), (13, 11, 3), (14, 12, 3), (15, 13, 3);
+INSERT INTO `chosen_answer` VALUES (1, 1, 2), (2, 4, 2), (3, 11, 2), (4, 7, 2), (5, 9, 2), (6, 10, 2), (7, 12, 2),
+(8, 1, 3), (9, 5, 3), (10, 7, 3), (11, 9, 3), (13, 10, 3), (14, 11, 3), (15, 13, 3),
+(16, 1, 4), (17, 5, 4), (18, 6, 4), (19, 9, 4), (20, 10, 4), 
+(21, 1, 5), (22, 5, 5), (23, 6, 5), (24, 8, 5), (25, 10, 5);
 
 --INSERT INTO chosen_answer VALUES (1, 1, 2), (2, 5, 2), (3, 5, 2), (4, 6, 2), (5, 8, 2), (6, 10, 2), (7, 12, 2),
 --(8, 1, 3), (9, 5, 3), (10, 7, 3), (11, 8, 3), (13, 11, 3), (14, 12, 3), (15, 13, 3);

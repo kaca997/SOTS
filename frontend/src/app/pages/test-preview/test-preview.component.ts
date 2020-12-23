@@ -85,10 +85,14 @@ export class TestPreviewComponent  implements OnInit {
     );
   }
   startTest(id : number) : void{
+    // window.location.href = `#/doneTestDetails/${id}`;
+    // window.location.reload();
     this.router.navigate(['testInProgress', id]);
   }
 
   testDetails(id: number) : void{
+    // window.location.href = `#/testInProgress/${id}`;
+    // window.location.reload();
     this.router.navigate(['doneTestDetails', id]);
   }
 
