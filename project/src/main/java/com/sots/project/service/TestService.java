@@ -1,12 +1,27 @@
 package com.sots.project.service;
 
+import java.io.File;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import com.jamesmurty.utils.XMLBuilder;
 import com.sots.project.dto.AnswerDTO;
 import com.sots.project.dto.QuestionDTO;
 import com.sots.project.dto.SectionDTO;
@@ -265,5 +280,100 @@ public class TestService {
 		}
 		return courses;
 		
+	}
+
+
+	public DOMSource getImsQti(Long testId) throws InvalidDataException, ParserConfigurationException, FactoryConfigurationError, TransformerException {
+		Test t;
+		try {
+			t = testRepository.findById(testId).get();
+		}
+		catch(Exception e){
+			throw new InvalidDataException("Test not found!");
+		}
+		
+		XMLBuilder xmlBuilder = XMLBuilder.create("qti-assessment-test");
+		xmlBuilder.a("title", t.getTitle());
+		
+		for (Section section : t.getSections()) {
+			
+			XMLBuilder element = xmlBuilder.element("qti-assessment-section");
+			element.a("title", section.getSectionTitle());
+			
+			for (Question question : section.getQuestions()) {
+				XMLBuilder qel = element.element("qti-assessment-item");
+				
+				XMLBuilder respDecl = qel.element("qti-response-declaration");
+				respDecl.a("identifier", "RESPONSE");
+				XMLBuilder corrResponse = respDecl.element("qti-correct-response");
+				
+				List<Answer> corrAns = getCorrectResponses(question);
+				for (Answer corAnsw : corrAns) {
+					XMLBuilder qtiValue = corrResponse.element("qti-value");
+					qtiValue =  qtiValue.text(corAnsw.getId().toString());
+				}
+				
+				XMLBuilder body = element.element("qti-item-body");
+				XMLBuilder p = body.element("p");
+				p = p.text(question.getText());
+				
+				XMLBuilder choices = element.element("qti-choice-interaction");
+				choices.a("max-choices", String.valueOf(question.getAnswers().size()));
+				choices.a("response-identifier", "RESPONSE");
+				
+				for (Answer answ : question.getAnswers()) {
+					XMLBuilder answerElement = choices.element("qti-simple-choice");
+					answerElement.a("identifier", answ.getId().toString());
+					answerElement = answerElement.text(answ.getText());
+				}
+			}
+		}
+		
+		DOMSource ds = new DOMSource(xmlBuilder.getDocument());
+		saveXmlFile(ds, t.getTitle() + t.getId());
+		return ds;
+	}
+	
+	public List<Answer> getCorrectResponses(Question question) {
+		
+		List<Answer> corrAnswers = question.getAnswers()
+											.stream()
+											.filter(ans -> ans.isCorrect() == true)
+											.collect(Collectors.toList());
+		return corrAnswers;
+		
+	}
+	
+	public static String docToString(DOMSource doc) {
+		try {
+	        StringWriter sw = new StringWriter();
+	        TransformerFactory tf = TransformerFactory.newInstance();
+	        Transformer transformer = tf.newTransformer();
+	        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+	        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+	        transformer.transform(doc, new StreamResult(sw));
+	        return sw.toString();
+	    } catch (Exception ex) {
+	        throw new RuntimeException("Error converting to String", ex);
+	    }
+	}
+	
+	public static void saveXmlFile(DOMSource doc, String name) throws TransformerException{
+		try {
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		    Transformer transformer = transformerFactory.newTransformer();
+		    transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+	        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+		    StreamResult result = new StreamResult(new File("../" + name + ".xml"));
+		    transformer.transform(doc, result);
+		    System.out.println("File saved!");
+		  } catch (TransformerException tfe) {
+		    tfe.printStackTrace();
+		} 
 	}
 }

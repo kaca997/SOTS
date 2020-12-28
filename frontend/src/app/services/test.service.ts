@@ -60,4 +60,10 @@ export class TestService {
     let testUrl =  "http://localhost:8080/test/getCoursesByTeacher";
 		return this.http.get<any[]>(testUrl, {headers: this.headers});
   }
+
+  exportImsQti(id : number) {
+    let testUrl =  `http://localhost:8080/test/getImsQti/${id}`;
+		return this.http.get<any>(testUrl, {headers: this.headers});
+  }
+
 }

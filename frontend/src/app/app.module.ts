@@ -24,6 +24,8 @@ import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { GraphComponent } from './pages/graph/graph.component';
 import { NewDomainComponent } from './pages/new-domain/new-domain.component';
 import { KnowledgeSpacesViewComponent } from './pages/knowledge-spaces-view/knowledge-spaces-view.component';
+import { XmlDisplay } from './pages/test-preview/test-preview.component';
+import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { KnowledgeSpacesViewComponent } from './pages/knowledge-spaces-view/know
     ErrorPageComponent,
     GraphComponent,
     NewDomainComponent,
-    KnowledgeSpacesViewComponent
+    KnowledgeSpacesViewComponent,
+    XmlDisplay
   ],
   imports: [
     BrowserAnimationsModule,
@@ -51,9 +54,16 @@ import { KnowledgeSpacesViewComponent } from './pages/knowledge-spaces-view/know
     }),
     SidebarModule,
     NavbarModule,
+    MatDialogModule,
     ToastrModule.forRoot()
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }],
+  entryComponents: [XmlDisplay],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
+    {
+      provide: MatDialogRef,
+      useValue: {}
+    },
+    { provide: MAT_DIALOG_DATA, useValue: {} }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
