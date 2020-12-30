@@ -1,12 +1,42 @@
 <h2 style="text-align: center;">Domain: {{domainName}}, Course: {{courseName}}</h2>
 <div *ngIf="this.dataLoaded === true" fxLayout="row ">
-    <div fxFlex= 48 fxLayout="column" fxLayoutAlign="center center">
+    <div fxFlex= 40 fxLayout="column" fxLayoutAlign="center center">
         <h3>Expected knowledge space</h3>
-        <app-graph [readOnly]=true [idd]="idd1"  [nodes]="nodes" [links]="expectedLinks" [width] = 520 [height] = 420></app-graph>
+        <app-graph [readOnly]=true [idd]="idd1"  [nodes]="nodes" [links]="expectedLinks" [width] = 420 [height] = 420></app-graph>
     </div>
-    <div fxFlex = 4></div>
-    <div fxFlex= 48 fxLayout="column" fxLayoutAlign="center center">
+    <div fxFlex = 2></div>
+    <div fxFlex= 40 fxLayout="column" fxLayoutAlign="center center">
         <h3>Real knowledge space</h3>
-        <app-graph [readOnly]=false [idd]="idd2"  [nodes]="nodes" [links]="realLinks" [width] = 520 [height] = 420></app-graph>
+        <app-graph [readOnly]=false [idd]="idd2"  [nodes]="nodes" [links]="realLinks" [width] = 420 [height] = 420></app-graph>
+    </div>
+    <div fxFlex = 2></div>
+    <div fxFlex = 16 fxLayout="column">
+        <h3 style="text-align: center;">Graph edit distance</h3>
+        <div style="background-color: lightgrey; border-radius: 5px; margin-bottom: 15%; padding: 2%;">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <p style="color: green;"> <b>ADD LINKS</b></p>
+            </div>
+            <div *ngFor="let result of resultsAdd; let i= index;" fxLayout="row" fxLayoutAlign="center center">
+                <small style="color: green;">{{i+1}}<b>. &nbsp; {{result.src}} -> {{result.trg}}</b></small>
+            </div>
+        </div>
+        <div style="background-color: lightgrey; border-radius: 5px;  margin-bottom: 15%; padding: 2%;">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <p style="color: steelblue;"><strong>UPDATE LINKS</strong></p>
+            </div>
+            <div *ngFor="let result of resultsUpdate; let i= index;" fxLayout="row" fxLayoutAlign="center center">
+                <small style="color: steelblue;">{{i+1}}<b>.&nbsp;&nbsp; {{result.src}} -> {{result.trg}}</b></small>
+            </div>
+        </div>
+
+        <div style="background-color: lightgrey; border-radius: 5px; padding: 2%;">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <p style="color:  red;"><b>DELETE LINKS</b></p>
+            </div>
+            <div *ngFor="let result of resultsDelete; let i= index;" fxLayout="row" fxLayoutAlign="center center">
+                <small style="color:  red;">{{i+1}}<b>.&nbsp;&nbsp; {{result.src}} -> {{result.trg}}</b></small>
+            </div>
+        </div>
+
     </div>
 </div>

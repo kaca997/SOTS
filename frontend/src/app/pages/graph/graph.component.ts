@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ɵbypassSanitizationTrustResourceUrl } from '@angular/core';
+import { AfterViewInit, EventEmitter,Component, Input, OnInit, Output, ɵbypassSanitizationTrustResourceUrl } from '@angular/core';
 import * as d3 from 'd3';
 import { ToastrService } from 'ngx-toastr';
 
@@ -38,14 +38,11 @@ export class GraphComponent implements AfterViewInit {
   @Input() links : Array<any>;
     // { source: this.nodes[0], target: this.nodes[1], left: false, right: true },
     // { source: this.nodes[1], target: this.nodes[2], left: false, right: true }
-
   constructor(private toastr: ToastrService) {}
-
   ngAfterViewInit() {
-
-    this.checkLinks()
-    console.log(this.links)
-    console.log(this.nodes)
+    // this.checkLinks()
+    // console.log(this.links)
+    // console.log(this.nodes)
     this.svg = d3.select(`#${this.idd}`)
       .attr('oncontextmenu', 'return false;')
       .attr('width', this.width)
@@ -406,9 +403,9 @@ export class GraphComponent implements AfterViewInit {
       var childrenLinks = links.filter(function (link) {
         return link.source.id === node.id;
       });
-      console.log("DECA: ", childrenLinks)
+      // console.log("DECA: ", childrenLinks)
       children = childrenLinks.map(link => link.target )
-      console.log("DECA CVOROVI:", children)
+      // console.log("DECA CVOROVI:", children)
       if(children.length === 0){
         return
       }else{
@@ -426,8 +423,8 @@ export class GraphComponent implements AfterViewInit {
   checkChildren(children, mainNode){
     // console.log("main ",mainNode)
     children.forEach(child => {
-      console.log("GLAVNI", mainNode)
-      console.log("Provera", child)
+      // console.log("GLAVNI", mainNode)
+      // console.log("Provera", child)
       if(child.id == mainNode.id){
         this.transitivity = true;
         return;
@@ -440,23 +437,23 @@ export class GraphComponent implements AfterViewInit {
     let i
     let link
     let checkLinks
-    console.log("Ok links", okLinks)
+    // console.log("Ok links", okLinks)
     for(i=0; i<okLinks.length; i++){
       link = okLinks[i]
       checkLinks = okLinks.filter(obj => obj !== link);
-      console.log("Check: ", checkLinks)
-      console.log("Link, ",link)
+      // console.log("Check: ", checkLinks)
+      // console.log("Link, ",link)
       // let mouseDown = link.source
       // let mouseUp = link.target
       // this.findParentsForNodes([link.source], link.target, checkLinks)
       this.findChildrenForNodes([link.source], link.target, checkLinks)
       if(this.cyclicGraph === true || this.transitivity === true){
         // // this.links.splice(link);
-        console.log("Remove ciclyc")
+        // console.log("Remove ciclyc")
         this.transitivity = false; 
         this.cyclicGraph = false;
       }else{
-        console.log("OKK", link)
+        // console.log("OKK", link)
          this.links.push(link)
       }
     }
@@ -467,9 +464,9 @@ export class GraphComponent implements AfterViewInit {
       this.nodes.splice(this.nodes.indexOf(this.selectedNode), 1);
       this.spliceLinksForNode(this.selectedNode);
     } else if (this.selectedLink) {
-      console.log("Linkovi", this.links)
+      // console.log("Linkovi", this.links)
       this.links.splice(this.links.indexOf(this.selectedLink), 1);
-      console.log(this.links)
+      // console.log(this.links)
     }
     this.selectedLink = null;
     this.selectedNode = null;
