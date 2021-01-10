@@ -629,10 +629,50 @@ public class TestService {
 		}
 		if (dto.getFinalState() == null) {
 			chooseQuestion(dto, t);
+		} else {
+			saveDoneTest(dto, t);
 		}
 		return dto;
 	}
 	
+	private void saveDoneTest(KnowledgeStatesProbabilityDTO dto, Test t) throws InvalidDataException{
+		
+		DoneTest done = new DoneTest();
+		done.setTest(t);
+		Long studentId = ((Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+		Student s = (Student) userRepository.findById(studentId).get();
+		done.setStudent(s);
+		for(QuestionDTO question : dto.getQuestions()) {
+			for(AnswerDTO answer : question.getAnswers()) {
+				if(answer.isChosen()) {
+					Answer a = answerRepository.getOne(answer.getId());
+					if(a == null) {
+						throw new InvalidDataException("Answer not found!");
+					}
+					done.getChosenAnswers().add(new ChosenAnswer(a));
+				}
+			}
+		}
+		
+		for (Section sec : t.getSections()) {
+			for (Question q : sec.getQuestions()) {
+				if (!containsQuestion(q, dto.getFinalState().getProblems()) && !containsIdQuestion(dto.getQuestions(), q.getId())){
+					for (Answer ans : q.getAnswers()) {
+						if (!ans.isCorrect()) {
+							Answer a = answerRepository.getOne(ans.getId());
+							if (a == null) {
+								throw new InvalidDataException("Answer not found!");
+							}
+							done.getChosenAnswers().add(new ChosenAnswer(a));
+						}
+					}
+				}
+			}
+		}
+		doneTestRepository.save(done);
+	}
+
+
 	public boolean checkIfAnswerIsCorrect(QuestionDTO questionDTO) {
 		boolean correct = false;
 		for (AnswerDTO answer : questionDTO.getAnswers()) {
@@ -654,6 +694,24 @@ public class TestService {
 	        if (problem.getId() == id) {
 	            return true;
 	        }
+	    }
+	    return false;
+	}
+	
+	public static boolean containsIdQuestion(List<QuestionDTO> list, Long id) {
+	    for (QuestionDTO problem : list) {
+	        if (problem.getId() == id) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	public static boolean containsQuestion(Question q, List<Problem> problems) {
+        for (Problem problem : problems) {
+			if (q.getProblem().getId() == problem.getId()) {
+				return true;
+			}
 	    }
 	    return false;
 	}
