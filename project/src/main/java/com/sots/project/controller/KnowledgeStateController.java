@@ -35,6 +35,21 @@ public class KnowledgeStateController {
 		}
 	}
 	
+	@GetMapping("/getStatesGraphTest/{testID}")
+	public ResponseEntity<?> getStateGraphTest(@PathVariable Long testID) {
+		try {
+			return new ResponseEntity<>(knowledgeStateService.generateKnowledgeStatesGraphTest(testID), HttpStatus.OK);
+		}
+		catch (InvalidDataException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@GetMapping("/generateStates/{testID}")
 	public ResponseEntity<?> getDoneTests(@PathVariable Long testID) {
 		try {
