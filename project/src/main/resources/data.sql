@@ -9,7 +9,7 @@ INSERT INTO `user_authority` VALUES (1,1),(2,2), (3,1), (4,1);
 
 INSERT INTO `domain` VALUES (1, 'Domen - matematika');
 INSERT INTO `knowledge_space` VALUES (1, 'EXPECTED', 1);
-INSERT INTO `problem` VALUES (1, 'Problem 1' , 1), (2, 'Problem 2' , 1), (3, 'Problem 3' , 1), (4, 'Problem 4' , 1), (5, 'Problem 5' , 1);
+INSERT INTO `problem` VALUES (1, 'P1' , 1), (2, 'P2' , 1), (3, 'P3' , 1), (4, 'P4' , 1), (5, 'P5' , 1);
 INSERT INTO `relation` VALUES (1, 1 , 2, 1), (2, 1 , 3, 1), (3, 2 , 3, 1), (4, 2 , 4, 1), (5, 2 , 5, 1);
 
 INSERT INTO `course` VALUES (1,'Matematika', 1),(2,'Istorija', null),(3,'Fizika', null),(4,'Hemija', null);
