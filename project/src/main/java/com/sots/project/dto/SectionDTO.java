@@ -11,6 +11,8 @@ public class SectionDTO {
 	
 	private String sectionTitle;
 	
+	private double rang;
+	
 	private List<QuestionDTO> questions = new ArrayList<QuestionDTO>();
 
 	public SectionDTO() {
@@ -57,10 +59,18 @@ public class SectionDTO {
 		this.questions = questions;
 	}
 
+	public double getRang() {
+		return rang;
+	}
+
+	public void setRang(double rang) {
+		this.rang = rang;
+	}
+
 	@Override
 	public String toString() {
-		return "SectionDTO [id=" + id + ", sectionTitle=" + sectionTitle + ", questions=" + questions + "]";
+		return "SectionDTO [id=" + id + ", sectionTitle=" + sectionTitle + ", rang=" + rang + ", questions=" + questions
+				+ "]";
 	}
-	
 	
 }

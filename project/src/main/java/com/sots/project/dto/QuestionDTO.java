@@ -11,6 +11,8 @@ public class QuestionDTO {
 
 	private String text;
 	
+	private Integer rang;
+	
 	private List<AnswerDTO> answers = new ArrayList<AnswerDTO>();
 
 	public QuestionDTO(Long id, String text, List<AnswerDTO> answers) {
@@ -56,4 +58,16 @@ public class QuestionDTO {
 		this.answers = answers;
 	}
 
+	public Integer getRang() {
+		return rang;
+	}
+
+	public void setRang(Integer rang) {
+		this.rang = rang;
+	}
+
+	@Override
+	public String toString() {
+		return "\nQuestionDTO [id=" + id + ", text=" + text + ", rang=" + rang + "]";
+	}
 }
