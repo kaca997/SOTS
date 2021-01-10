@@ -24,8 +24,8 @@ INSERT INTO `done_test` VALUES (1,1,2),(2,1,1), (3,3,1), (4,1,1), (5,1,1) ;
 
 INSERT INTO `section` VALUES (1,'Polinomi',1),(2,'Integrali',1);
 
-INSERT INTO `question` (id, text, problem_id, section_id) VALUES (1,'Koliko je (a+b)^2', 2 ,1),(2,'Koliko je (a+b)^3', 1,1),
-(3,'Koliko integral od x', 3,2),(4,'Koliko je integral od x^2', 5,2),(5,'Koliko je integral od x^3', 4,2);
+INSERT INTO `question` (id, text, problem_id, section_id) VALUES (1,'Koliko je (a+b)^2', 1 ,1),(2,'Koliko je (a+b)^3', 2,1),
+(3,'Koliko integral od x', 3,2),(4,'Koliko je integral od x^2', 4,2),(5,'Koliko je integral od x^3', 5,2);
 
 INSERT INTO `answer` VALUES (1,true,'Tacno',1),(2,false,'Netacno1',1),
 (3,false,'Netacno',2),(4,false,'Netacno1',2),(5,true,'Tacno tacno tacnooo',2),

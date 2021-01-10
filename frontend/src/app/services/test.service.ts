@@ -66,4 +66,14 @@ export class TestService {
 		return this.http.get<any>(testUrl, {headers: this.headers});
   }
 
+  getForDrivenTesting(id : number) {
+    let testUrl =  `http://localhost:8080/test/getTestForDrivenTesting/${id}`;
+		return this.http.get<any>(testUrl, {headers: this.headers});
+  }
+
+  submitQuestion(state: any, id: number) {
+    let testUrl =  `http://localhost:8080/test/submitQuestion/${id}`;
+		return this.http.post(testUrl, state, {headers: this.headers});
+  }
+
 }

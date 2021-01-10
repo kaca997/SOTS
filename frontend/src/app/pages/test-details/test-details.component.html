@@ -9,7 +9,7 @@
             <mat-card-title fxLayoutAlign="center center">{{test.sections[pageNumber].sectionTitle}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <div style="margin: 15px;" *ngFor="let question of test.sections[pageNumber].questions; let i = index">
+                <div style="margin: 30px;" *ngFor="let question of test.sections[pageNumber].questions; let i = index">
                     <div style="margin-bottom: 10px;" fxLayout="row wrap">
                         <strong>{{i+1}}. </strong>{{question.text}}
                     </div>

@@ -18,6 +18,7 @@
             <button *ngIf="done" mat-flat-button class="btn-dark btn-block" style="border-radius: 20px;" (click)="testDetails(test.doneTestId)">Test details</button>
             <button *ngIf="(!done && isTeacher)" mat-flat-button class="btn-dark btn-block" style="border-radius: 20px;" (click)="testDetailsTeacher(test.testId)">Test details</button>
             <button mat-flat-button class="btn-dark btn-block" style="border-radius: 20px;" (click)="exportToXml(test.testId)">Export to IMS QTI xml</button>
+            <button *ngIf="(!done && !isTeacher)" mat-flat-button class="btn-primary btn-block" style="border-radius: 20px;" (click)="startDrivenTesting(test.testId)">Start driven testing</button>
         </mat-card>
     </div>
 </ng-template>

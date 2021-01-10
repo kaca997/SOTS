@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,14 +16,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.sots.project.dto.TestDetailsDTO;
+import com.sots.project.dto.KnowledgeStatesProbabilityDTO;
+import com.sots.project.dto.RelationDTO;
 import com.sots.project.dto.TestDTO;
 import com.sots.project.dto.UpdateTestDTO;
 import com.sots.project.model.Test;
 import com.sots.project.service.InvalidDataException;
 import com.sots.project.service.TestService;
+
+import net.minidev.json.JSONObject;
 
 @RestController
 @RequestMapping("/test")
@@ -164,6 +170,40 @@ public class TestController {
 		} catch (TransformerException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
+		}
+	}
+	
+//	@PreAuthorize("hasRole('ROLE_STUDENT')")
+	@GetMapping("/getTestForDrivenTesting/{testId}")
+	public ResponseEntity<?> getTestForDrivenTesting(@PathVariable Long testId) {
+		System.out.println(testId);
+		try {
+			KnowledgeStatesProbabilityDTO dto = testService.getTestForDrivenTesting(testId);
+			return new ResponseEntity<>(dto, HttpStatus.OK);
+		}
+		catch (InvalidDataException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+//	@PreAuthorize("hasRole('ROLE_STUDENT')")
+	@PostMapping("/submitQuestion/{testId}")
+	public ResponseEntity<?> submitQuestion(@RequestBody KnowledgeStatesProbabilityDTO dto, @PathVariable Long testId) {
+		try {
+			return new ResponseEntity<>(testService.updateProbabilities(dto, testId), HttpStatus.OK);
+		}
+		catch (InvalidDataException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 }

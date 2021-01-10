@@ -1,0 +1,36 @@
+<ng-container *ngIf="error; else elseTemplate">
+    <h2 style="text-align: center;">{{error}}</h2>
+</ng-container>
+<ng-template #elseTemplate>
+    <h1 style="text-align: center;">{{test.title}}</h1>
+    <div fxLayoutAlign="center stretch" fxLayout="column">
+        <mat-card class="card">
+            <mat-card-content>
+                <div *ngIf = "!isFinalState" style="margin: 15px;">
+                    <div style="margin-bottom: 10px;" fxLayout="row wrap">
+                        <strong>{{counter}}. </strong>{{kstateProb.questionToAsk.text}}
+                    </div>
+                    <div fxLayout="row wrap">
+                        <div *ngFor="let answer of kstateProb.questionToAsk.answers">
+                            <div >
+                                <mat-checkbox style="margin: 10px;" [(ngModel)]="answer.chosen" class="example-margin" >{{answer.text}}</mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf = "isFinalState" style="margin: 15px;">
+                    Final state : 
+                    <div *ngFor="let problem of finalState.problems">
+                        <div >
+                           {{problem.name}}
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+            <button *ngIf = "!isFinalState"  mat-flat-button class="btn btn-primary btn-block" style="border-radius: 20px;" (click)="next()">Next</button>
+        </mat-card>
+    </div>
+    
+    
+</ng-template>
+
