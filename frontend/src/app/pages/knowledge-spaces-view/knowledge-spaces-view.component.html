@@ -40,3 +40,8 @@
 
     </div>
 </div>
+<div fxLayout="row" style="height: 20px">
+</div>
+<div *ngIf="this.statesLoaded === true"  fxLayout="row ">
+    <app-state-graph [idd]="idd3"  [nodes]="stateNodes" [links] = "stateLinks" [width] = 1030 [height] = 300></app-state-graph>
+</div>

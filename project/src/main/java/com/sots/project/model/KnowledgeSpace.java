@@ -89,5 +89,4 @@ public class KnowledgeSpace {
 	public void setDomain(Domain domain) {
 		this.domain = domain;
 	}
-	
 }
