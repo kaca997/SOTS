@@ -7,6 +7,7 @@ import { TestPreviewComponent } from 'app/pages/test-preview/test-preview.compon
 import { GraphComponent } from 'app/pages/graph/graph.component';
 import { NewDomainComponent } from 'app/pages/new-domain/new-domain.component';
 import { KnowledgeSpacesViewComponent } from 'app/pages/knowledge-spaces-view/knowledge-spaces-view.component';
+import { DrivenTestingComponent } from 'app/pages/driven-testing/driven-testing.component';
 export const AdminLayoutRoutes: Routes = [
    // { path: "new-test",       component: NewTestComponent },
    { path: "courses",       component: CoursesComponent,
@@ -25,6 +26,9 @@ export const AdminLayoutRoutes: Routes = [
    data: { expectedRoles: 'ROLE_STUDENT' },
    canActivate: [RoleGuard]  },
    { path: 'doneTestDetails/:id', component: TestDetailsComponent,
+   data: { expectedRoles: 'ROLE_STUDENT' },
+   canActivate: [RoleGuard]  }, 
+   { path: 'drivenTestingInProgress/:id', component: DrivenTestingComponent,
    data: { expectedRoles: 'ROLE_STUDENT' },
    canActivate: [RoleGuard]  }, 
    { path: 'testDetailsTeacher/:id', component: TestDetailsComponent,

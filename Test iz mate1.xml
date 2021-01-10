@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qti-assessment-test title="Test iz mate">
+<qti-assessment-section title="Polinomi">
+<qti-assessment-item>
+<qti-response-declaration identifier="RESPONSE">
+<qti-correct-response>
+<qti-value>1</qti-value>
+</qti-correct-response>
+</qti-response-declaration>
+</qti-assessment-item>
+<qti-item-body>
+<p>Koliko je (a+b)^2</p>
+</qti-item-body>
+<qti-choice-interaction max-choices="2" response-identifier="RESPONSE">
+<qti-simple-choice identifier="1">Tacno</qti-simple-choice>
+<qti-simple-choice identifier="2">Netacno1</qti-simple-choice>
+</qti-choice-interaction>
+<qti-assessment-item>
+<qti-response-declaration identifier="RESPONSE">
+<qti-correct-response>
+<qti-value>5</qti-value>
+</qti-correct-response>
+</qti-response-declaration>
+</qti-assessment-item>
+<qti-item-body>
+<p>Koliko je (a+b)^3</p>
+</qti-item-body>
+<qti-choice-interaction max-choices="3" response-identifier="RESPONSE">
+<qti-simple-choice identifier="3">Netacno</qti-simple-choice>
+<qti-simple-choice identifier="4">Netacno1</qti-simple-choice>
+<qti-simple-choice identifier="5">Tacno tacno tacnooo</qti-simple-choice>
+</qti-choice-interaction>
+</qti-assessment-section>
+<qti-assessment-section title="Integrali">
+<qti-assessment-item>
+<qti-response-declaration identifier="RESPONSE">
+<qti-correct-response>
+<qti-value>6</qti-value>
+</qti-correct-response>
+</qti-response-declaration>
+</qti-assessment-item>
+<qti-item-body>
+<p>Koliko integral od x</p>
+</qti-item-body>
+<qti-choice-interaction max-choices="2" response-identifier="RESPONSE">
+<qti-simple-choice identifier="6">Tacno</qti-simple-choice>
+<qti-simple-choice identifier="7">Netacno1</qti-simple-choice>
+</qti-choice-interaction>
+<qti-assessment-item>
+<qti-response-declaration identifier="RESPONSE">
+<qti-correct-response>
+<qti-value>8</qti-value>
+</qti-correct-response>
+</qti-response-declaration>
+</qti-assessment-item>
+<qti-item-body>
+<p>Koliko je integral od x^2</p>
+</qti-item-body>
+<qti-choice-interaction max-choices="2" response-identifier="RESPONSE">
+<qti-simple-choice identifier="8">Tacno</qti-simple-choice>
+<qti-simple-choice identifier="9">Netacno1</qti-simple-choice>
+</qti-choice-interaction>
+<qti-assessment-item>
+<qti-response-declaration identifier="RESPONSE">
+<qti-correct-response>
+<qti-value>10</qti-value>
+<qti-value>12</qti-value>
+<qti-value>13</qti-value>
+</qti-correct-response>
+</qti-response-declaration>
+</qti-assessment-item>
+<qti-item-body>
+<p>Koliko je integral od x^3</p>
+</qti-item-body>
+<qti-choice-interaction max-choices="4" response-identifier="RESPONSE">
+<qti-simple-choice identifier="10">Tacno</qti-simple-choice>
+<qti-simple-choice identifier="11">Netacno1</qti-simple-choice>
+<qti-simple-choice identifier="12">Tacno1</qti-simple-choice>
+<qti-simple-choice identifier="13">Tacno2</qti-simple-choice>
+</qti-choice-interaction>
+</qti-assessment-section>
+</qti-assessment-test>

@@ -96,6 +96,10 @@ export class TestPreviewComponent  implements OnInit {
     this.router.navigate(['testInProgress', id]);
   }
 
+  startDrivenTesting(id : number) : void {
+    this.router.navigate(['drivenTestingInProgress', id]);
+  }
+
   testDetails(id: number) : void{
     // window.location.href = `#/testInProgress/${id}`;
     // window.location.reload();
