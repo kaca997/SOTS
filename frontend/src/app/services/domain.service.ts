@@ -26,5 +26,10 @@ export class DomainService {
     let testUrl = `http://localhost:8080/knowledgeSpace/sendReqRealKS/${id}`
     return this.http.get(testUrl, {headers: this.headers});
   }
+
+  getStates(id : number): Observable<any>{
+    let testUrl = `http://localhost:8080/knowledgeState/getStatesGraph/${id}`
+    return this.http.get(testUrl, {headers: this.headers});
+  }
   
 }

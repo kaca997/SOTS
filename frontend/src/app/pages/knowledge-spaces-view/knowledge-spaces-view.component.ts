@@ -15,12 +15,15 @@ export class KnowledgeSpacesViewComponent implements OnInit {
   domainName = ""
   courseName =""
   nodes = []
+  stateNodes = []
+  stateLinks = [];
   realLinks = [];
   expectedLinks = [];
   tRealLinks = null;
   tExpectedLinks = null; 
   idd1 = "exp"
   idd2 = "real"
+  idd3 = "states"
   realKS: any;
   cyclicGraph = false;
   transitivity = false;
@@ -29,11 +32,16 @@ export class KnowledgeSpacesViewComponent implements OnInit {
   resultsDelete = []
 
   dataLoaded = false;
+  statesLoaded = false;
   constructor(private route: ActivatedRoute, private ds: DomainService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => this.domainId = params['id']);
+    this.getState();
+    console.log(this.dataLoaded)
     this.getDomain();
+    console.log(this.stateNodes);
+    console.log(this.stateLinks);
     // console.log(JSON.stringify(this.diff({}, {a:1, b:2, c:3})));
     // console.log(JSON.stringify(this.diff({a:1, b:2, c:3}, {})));
     // console.log(JSON.stringify(this.diff({a:1, b:2, c:3}, {b:20, c:30, d:40})));
@@ -47,7 +55,15 @@ export class KnowledgeSpacesViewComponent implements OnInit {
         return i
       }
     }
-}
+  }
+  findState(name): number{
+    var i: number;
+    for(i = 0; i < this.stateNodes.length; i++){
+      if(this.stateNodes[i].id === name){
+        return i
+      }
+    }
+  }
 
   getRealKS():void {
      this.ds.getRealKS(this.domainId).subscribe(
@@ -61,6 +77,38 @@ export class KnowledgeSpacesViewComponent implements OnInit {
         
   }
 
+  getState(): void{
+    this.ds.getStates(this.domainId).subscribe(
+      graph =>{
+        graph.nodes.forEach(el => {
+          const node = {id:el.name, group: el.group, reflexive: false}
+          this.stateNodes.push(node);
+        });
+
+        graph.relations.forEach(relation => {
+          var i = this.findState(relation.surmiseFrom)
+          var j =this.findState(relation.surmiseTo)
+          // console.log(i);
+          // console.log(this.stateNodes[i]);
+          // console.log(j);
+          const link = {source: this.stateNodes[i], target: this.stateNodes[j], left: false, right: true};
+          // console.log(link);
+          this.stateLinks.push(link)
+          
+        });
+        this.checkStates();
+        this.statesLoaded = true;
+        // console.log(this.stateLinks)
+
+        // this.checkRealLinks()
+        // this.checkExpectedLinks()
+      },
+      error => {
+        console.log(error);
+        this.toastr.error(error.error);
+      }
+    )
+  }
   getDomain(): void{
     // this.getRealKS();
 
@@ -159,6 +207,35 @@ export class KnowledgeSpacesViewComponent implements OnInit {
     }
   }
 
+  checkStates(){
+    let okLinks = this.stateLinks
+    console.log("STate", this.stateLinks)
+    console.log("State nodes", this.stateNodes)
+    this.stateLinks = []
+    let i
+    let link
+    let checkLinks
+    // console.log("Ok links", okLinks)
+    for(i=0; i<okLinks.length; i++){
+      link = okLinks[i]
+      checkLinks = okLinks.filter(obj => obj !== link);
+      // console.log("Check: ", checkLinks)
+      // console.log("Link, ",link)
+      // let mouseDown = link.source
+      // let mouseUp = link.target
+      // this.findParentsForNodes([link.source], link.target, checkLinks)
+      this.findChildrenForNodes([link.source], link.target, checkLinks)
+      if(this.cyclicGraph === true || this.transitivity === true){
+        // // this.links.splice(link);
+        // console.log("Remove ciclyc")
+        this.transitivity = false; 
+        this.cyclicGraph = false;
+      }else{
+        // console.log("OKK", link)
+         this.stateLinks.push(link)
+      }
+    }
+  }
   findChildrenForNodes(nodes, mainNode, links){
     var children = []
     nodes.forEach(node => {

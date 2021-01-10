@@ -26,6 +26,7 @@ import { NewDomainComponent } from './pages/new-domain/new-domain.component';
 import { KnowledgeSpacesViewComponent } from './pages/knowledge-spaces-view/knowledge-spaces-view.component';
 import { XmlDisplay } from './pages/test-preview/test-preview.component';
 import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { StateGraphComponent } from './pages/state-graph/state-graph.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/
     GraphComponent,
     NewDomainComponent,
     KnowledgeSpacesViewComponent,
-    XmlDisplay
+    XmlDisplay,
+    StateGraphComponent
   ],
   imports: [
     BrowserAnimationsModule,
