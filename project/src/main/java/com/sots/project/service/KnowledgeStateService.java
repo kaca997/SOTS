@@ -49,7 +49,16 @@ public class KnowledgeStateService {
 	
 	@Autowired
 	private TestRepository testRepository;
-	
+
+	public AllPossibleStatesDTO generateKnowledgeStatesGraphTest(Long testID) throws InvalidDataException {
+		Test t = testRepository.findById(testID).get();
+		if (t == null) {
+			throw new InvalidDataException("This domain doesn't exist.");
+		}
+//		Domain d = domainRepository.findById(domainID).get();
+		Domain d = t.getCourse().getDomain();
+		return this.generateKnowledgeStatesGraph(d.getId());
+	}
 	public AllPossibleKnowledgeStates generateAllPossibleStates(Long testID) throws InvalidDataException {
 		Test t = testRepository.findById(testID).get();
 		if (t == null) {

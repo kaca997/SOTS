@@ -15,7 +15,7 @@ export class StateGraphComponent implements AfterViewInit {
   @Input() width;
   @Input() height;
   @Input() idd;
-  colors = d3.scaleOrdinal(d3.schemeCategory10);
+  colors = d3.scaleOrdinal(d3.schemeCategory10).domain(["foo", "bar", "baz", "foobar"]);;
 
   svg: any;
   force: any;
@@ -132,7 +132,7 @@ export class StateGraphComponent implements AfterViewInit {
 
     // update existing nodes (reflexive & selected visual states)
     this.circle.selectAll('circle')
-      .style('fill', (d) => (this.colors('red')))
+      .style('fill', (d) => (this.colors('foo')))
       .classed('reflexive', (d) => d.reflexive);
 
     // remove old nodes
@@ -144,8 +144,8 @@ export class StateGraphComponent implements AfterViewInit {
     g.append('svg:circle')
       .attr('class', 'node')
       .attr('r', 12)
-      .style('fill', (d) => (this.colors('red')))
-      .style('stroke', (d) => d3.rgb(this.colors('red')).darker().toString())
+      .style('fill', (d) => ( d.currentState === true ? this.colors('baz'): this.colors('foo')))
+      .style('stroke', (d) => d3.rgb(this.colors('foo')).darker().toString())
       .classed('reflexive', (d) => d.reflexive)
     // show node IDs
     g.append('svg:text')

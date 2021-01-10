@@ -19,11 +19,16 @@
                     </div>
                 </div>
                 <div *ngIf = "isFinalState" style="margin: 15px;">
-                    Final state : 
-                    <div *ngFor="let problem of finalState.problems">
-                        <div >
-                           {{problem.name}}
-                        </div>
+                    <h3 style="text-align: center;"><b>Final state : 
+                        <span *ngFor="let problem of finalState.problems">
+                            <span >
+                            {{problem.name}} &nbsp;
+                            </span>
+                        </span>
+                    </b>
+                    </h3>
+                    <div *ngIf="this.statesLoaded === true">
+                        <app-state-graph [idd]="idd"  [nodes]="stateNodes" [links] = "stateLinks" [width] = 980 [height] = 300></app-state-graph>
                     </div>
                 </div>
             </mat-card-content>

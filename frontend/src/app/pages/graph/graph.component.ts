@@ -50,7 +50,7 @@ export class GraphComponent implements AfterViewInit {
 
     this.force = d3.forceSimulation()
       .force('link', d3.forceLink().id((d: any) => d.id).distance(100))
-      .force('charge', d3.forceManyBody().strength(-1500))
+      .force('charge', d3.forceManyBody().strength(-1000))
       .force('x', d3.forceX(this.width / 2))
       .force('y', d3.forceY(this.height / 2))
       .on('tick', () => this.tick());
