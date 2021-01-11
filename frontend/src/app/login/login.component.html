@@ -15,7 +15,7 @@
           </mat-form-field>
   
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Password" [formControl]="form.controls.password">
+            <input matInput placeholder="Password" type= "password" [formControl]="form.controls.password">
             <br>
             <small id="password-empty" class="text-danger"  *ngIf="form.controls.password.touched && form.controls.password.errors?.required">
             This field can't be empty!</small>

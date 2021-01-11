@@ -3,12 +3,12 @@ package com.sots.project.service;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.annotation.sql.DataSourceDefinition;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -27,6 +27,7 @@ import com.sots.project.dto.AnswerDTO;
 import com.sots.project.dto.CourseDTO;
 import com.sots.project.dto.KnowledgeStatesProbabilityDTO;
 import com.sots.project.dto.QuestionDTO;
+import com.sots.project.dto.SectionDTO;
 import com.sots.project.dto.StateNodeProbDTO;
 import com.sots.project.dto.TestDTO;
 import com.sots.project.dto.TestDetailsDTO;
@@ -38,8 +39,11 @@ import com.sots.project.model.ChosenAnswer;
 import com.sots.project.model.Course;
 import com.sots.project.model.Domain;
 import com.sots.project.model.DoneTest;
+import com.sots.project.model.KnowledgeSpace;
+import com.sots.project.model.KnowledgeSpaceType;
 import com.sots.project.model.Problem;
 import com.sots.project.model.Question;
+import com.sots.project.model.Relation;
 import com.sots.project.model.Section;
 import com.sots.project.model.StateNode;
 import com.sots.project.model.Student;
@@ -255,8 +259,93 @@ public class TestService {
 				throw new InvalidDataException("You have already done this test!");
 			}
 		}
+		
+		Domain d = t.getCourse().getDomain();
+
+		
+		KnowledgeSpace kSpace = null; 
+		
+		for (KnowledgeSpace ks : d.getKnowledgeSpaces()) {
+			if (ks.getKnowledgeSpaceType() == KnowledgeSpaceType.REAL) {
+				kSpace = ks;
+			}
+		}
+		
+		if(kSpace == null) {
+			kSpace = d.getKnowledgeSpaces().get(0);
+		}
+		
+		List<Relation> relations = kSpace.getRelations();
+		
+		List<Section> sections = t.getSections();
+		List<SectionDTO> sorted = this.sortSections(sections, relations);
+		
 		TestDetailsDTO dto = new TestDetailsDTO(t);
+		dto.setSections(sorted);
 		return dto;
+	}
+	
+	private List<SectionDTO> sortSections(List<Section>sections, List<Relation>relations){
+		List<SectionDTO> sectionsDTO = new ArrayList<>();
+		for(Section sec : sections) {
+			float sum = 0;
+			List<QuestionDTO> questionsDTO = new ArrayList<>();
+			for(Question q : sec.getQuestions()) {
+				int n = this.findAncestorsForProblem(q.getProblem(), relations).size();
+				sum += n;
+				QuestionDTO qdto = new QuestionDTO(q);
+				qdto.setRang(n);
+				questionsDTO.add(qdto);	
+			}
+			SectionDTO secDTO = new SectionDTO(sec);
+			secDTO.setRang(sum/sec.getQuestions().size());
+			secDTO.setQuestions(questionsDTO);
+			sectionsDTO.add(secDTO);
+			
+		}
+		List<SectionDTO> sortedSections = sectionsDTO.stream()
+	            .sorted(Comparator.comparingDouble(SectionDTO::getRang))
+	            .collect(Collectors.toList());
+		
+		for(SectionDTO sSec: sortedSections) {
+			List<QuestionDTO> sortedQuestions = sSec.getQuestions().stream()
+		            .sorted(Comparator.comparingInt(QuestionDTO::getRang))
+		            .collect(Collectors.toList());
+			sSec.setQuestions(sortedQuestions);
+		}
+//		System.out.println(sortedSections);
+		return sortedSections;
+	}
+	
+	private Set<Problem> findAncestorsForProblem(Problem problem, List<Relation> relations) {
+		System.out.println("Problem par:" + problem);
+		Set<Problem> parentsFinal = new HashSet<Problem>();
+		Set<Problem> problems = new HashSet<Problem>();
+		problems.add(problem);
+		boolean end = false;
+		while(!end) {
+			Set<Problem> found = findParents(problems, relations);
+			if(found.size() == 0) {
+				end = true;
+			}
+			else {
+				parentsFinal.addAll(found);
+				problems = found;
+			}
+		}
+		return parentsFinal;
+	}
+	
+	private Set<Problem> findParents(Set<Problem> problems, List<Relation> relations) {
+		Set<Problem> parents = new HashSet<Problem>();
+		for(Problem p : problems) {
+			for(Relation r : relations) {
+				if(r.getSurmiseTo().equals(p)) {
+					parents.add(r.getSurmiseFrom());
+				}
+			}
+		}
+		return parents;
 	}
 	
 	public TestDetailsDTO getTestTeacher(Long testId) throws InvalidDataException {
@@ -277,7 +366,28 @@ public class TestService {
 			throw new InvalidDataException("You are not assigned to this test!");
 		}
 		
+Domain d = t.getCourse().getDomain();
+
+		
+		KnowledgeSpace kSpace = null; 
+		
+		for (KnowledgeSpace ks : d.getKnowledgeSpaces()) {
+			if (ks.getKnowledgeSpaceType() == KnowledgeSpaceType.REAL) {
+				kSpace = ks;
+			}
+		}
+		
+		if(kSpace == null) {
+			kSpace = d.getKnowledgeSpaces().get(0);
+		}
+		
+		List<Relation> relations = kSpace.getRelations();
+		
+		List<Section> sections = t.getSections();
+		List<SectionDTO> sorted = this.sortSections(sections, relations);
+		
 		TestDetailsDTO dto = new TestDetailsDTO(t);
+		dto.setSections(sorted);
 		return dto;
 	}
 
@@ -735,6 +845,7 @@ public class TestService {
 	}
 	
 	public StateNodeProbDTO twoLargest(List<StateNodeProbDTO> states){
+
 	    double largestA = Double.MIN_VALUE, largestB = Double.MIN_VALUE;
 	    StateNodeProbDTO state = null;
 	    
