@@ -29,7 +29,11 @@ class CreateKS(Resource):
     def post(self):
         json_data = request.get_json(force=True)
         dataframe = pd.DataFrame.from_dict(json_data)
-        print(dataframe)
+
+        data_frame = load_data("pisa.txt")
+        data_frame.columns = dataframe.columns
+        dataframe = dataframe.append(data_frame)
+
         list = []
         response = iita(dataframe, v=1)
         print(response)

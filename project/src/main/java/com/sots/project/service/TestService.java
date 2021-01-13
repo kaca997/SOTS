@@ -739,9 +739,10 @@ Domain d = t.getCourse().getDomain();
 		}
 		if (dto.getFinalState() == null) {
 			chooseQuestion(dto, t);
-		} else {
-			saveDoneTest(dto, t);
-		}
+		} 
+//		else {
+//			saveDoneTest(dto, t);
+//		}
 		return dto;
 	}
 	
