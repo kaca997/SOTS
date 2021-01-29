@@ -59,17 +59,22 @@ public class DomainController {
 		try {
 			
 			KnowledgeSpace ks = knowledgeSpaceService.getRealKSByDomain(id);
-			if (ks == null) {
-				JSONObject o = knowledgeSpaceService.getMatrixForRealKS(id);
-				HttpHeaders httpHeaders = new HttpHeaders();
-			    httpHeaders.set("Authorization", token);
-			    System.out.println(o.toJSONString());
-				ResponseEntity<RelationDTO[]> message = restTemplate.postForEntity("http://localhost:5000/getRealKS",  o.toJSONString(),RelationDTO[].class);
-//				ResponseEntity<RelationDTO[]> message = restTemplate.getForEntity("http://localhost:5000/getRealKS",  RelationDTO[].class);
+			try {
+				if (ks == null) {
+					JSONObject o = knowledgeSpaceService.getMatrixForRealKS(id);
+					HttpHeaders httpHeaders = new HttpHeaders();
+				    httpHeaders.set("Authorization", token);
+				    System.out.println(o.toJSONString());
+					ResponseEntity<RelationDTO[]> message = restTemplate.postForEntity("http://localhost:5000/getRealKS",  o.toJSONString(),RelationDTO[].class);
+//					ResponseEntity<RelationDTO[]> message = restTemplate.getForEntity("http://localhost:5000/getRealKS",  RelationDTO[].class);
 
-				knowledgeSpaceService.createRealKS(message.getBody(), id);
+					knowledgeSpaceService.createRealKS(message.getBody(), id);
+				}
+			} catch (InvalidDataException e) {
+				e.printStackTrace();
+				knowledgeSpaceService.createNewRealKS(id);
+//				return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 			}
-			
 			
 			return new ResponseEntity<>(domainService.getDomain(id), HttpStatus.OK);
 		} catch (InvalidDataException e) {

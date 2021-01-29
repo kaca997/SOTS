@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sots.project.dto.KnowledgeSpaceDTO;
+import com.sots.project.dto.QuestionDTO;
 import com.sots.project.dto.RelationDTO;
 import com.sots.project.model.Answer;
 import com.sots.project.model.ChosenAnswer;
@@ -196,8 +197,9 @@ public class KnowledgeSpaceService {
 			List<Integer> ans = new ArrayList<>();
 			for (DoneTest doneTest : doneTests) {
 				List<ChosenAnswer> answers = doneTest.getChosenAnswers().stream()
-					      .filter(el -> qu.getAnswers().contains(el.getAnswer()))
+					      .filter(el -> containsIdAnswer(qu.getAnswers(), el.getAnswer().getId()))
 					      .collect(Collectors.toList());
+//				 qu.getAnswers().contains(el.getAnswer())
 //				chosenAnswers.addAll(answers);
 				Integer answInt = 0;
 				for (Answer a : q.getAnswers()) {
@@ -228,6 +230,15 @@ public class KnowledgeSpaceService {
 		return new JSONObject(matrix);
 		
 	}
+	
+	public void createNewRealKS(Long id) {
+		KnowledgeSpace ks = new KnowledgeSpace();
+		Domain d = domainRepository.findById(id).get();
+		ks.setDomain(d);
+		ks.setKnowledgeSpaceType(KnowledgeSpaceType.REAL);
+		knowledgeSpaceRepository.save(ks);
+		domainRepository.save(d);
+	}
 
 	public JSONObject getMatrixForRealKSTestId(Long testId) throws InvalidDataException {
 		Test t = testRepository.findById(testId).get();
@@ -245,7 +256,15 @@ public class KnowledgeSpaceService {
 		}
 		
 		createRealKS(body, t.getCourse().getDomain().getId());
-		
+	}
+	
+	public static boolean containsIdAnswer(List<Answer> list, Long id) {
+	    for (Answer problem : list) {
+	        if (problem.getId() == id) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 
 }
