@@ -121,26 +121,33 @@ export class DrivenTestingComponent implements OnInit {
 
     this.ds.getStatesTest(this.testId).subscribe(
       graph =>{
+        console.log(this.finalState)
         graph.nodes.forEach(el => {
-          var problemNames = el.name.substring(2, el.name.length-2).split(", ")
-          // console.log(problemNames);
-          // console.log(problems.length)
           var check = false;
-          if(this.finalState.problems.length == problemNames.length){
-            check = true;
-            this.finalState.problems.forEach(problem => {
-              if(!problemNames.includes(problem.name)){
-                check = false;
-                return;
-              }
-            });
+          if(this.finalState.problems.length != 0){
+            var problemNames = el.name.substring(2, el.name.length-2).split(", ")
+            // console.log(problemNames);
+            // console.log(problems.length)
+            if(this.finalState.problems.length == problemNames.length){
+              check = true;
+              this.finalState.problems.forEach(problem => {
+                if(!problemNames.includes(problem.name)){
+                  check = false;
+                  return;
+                }
+              });
+            }
+          }
+          else{
+            if(el.name == "{}"){
+              check = true;
+            }
           }
           console.log("Name: ", el.name)
           // console.log("CURR?: ", finalName ===el.name)
           const node = {id:el.name, group: el.group, currentState: check, reflexive: false}
           this.stateNodes.push(node);
         });
-
         graph.relations.forEach(relation => {
           var i = this.findState(relation.surmiseFrom)
           var j =this.findState(relation.surmiseTo)

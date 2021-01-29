@@ -227,7 +227,7 @@ export class GraphComponent implements AfterViewInit {
       .on('mousedown', (event, d) => {
         if(this.readOnly) return;
         if (event.ctrlKey) return;
-
+        
         // select node
         this.mousedownNode = d;
         this.selectedNode = (this.mousedownNode === this.selectedNode) ? null : this.mousedownNode;
@@ -340,7 +340,12 @@ export class GraphComponent implements AfterViewInit {
     if (!this.mousedownNode) return;
     
     // update drag line
-    this.dragLine.attr('d', `M${this.mousedownNode.x},${this.mousedownNode.y}L${d3.pointer(event.currentTarget)[0]},${d3.pointer(event.currentTarget)[1]}`);
+    // console.log(this.mousedownNode)
+    console.log(event)
+    // console.log(d3.pointer(event.currentTarget)[0]);
+    var x = event.pageX - document.getElementById(this.idd).getBoundingClientRect().x
+    var y = event.pageY - document.getElementById(this.idd).getBoundingClientRect().y
+    this.dragLine.attr('d', `M${this.mousedownNode.x},${this.mousedownNode.y}L${x},${y}`);
 
     this.restart(event);
   }

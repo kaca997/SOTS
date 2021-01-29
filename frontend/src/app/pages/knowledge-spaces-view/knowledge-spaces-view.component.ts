@@ -277,6 +277,7 @@ export class KnowledgeSpacesViewComponent implements OnInit {
     this.expectedLinks.forEach(
       expectedLink =>{
         var updated = false;
+        var ok = false;
         this.realLinks.forEach(
           realLink => {
             if(expectedLink.source.id === realLink.target.id && expectedLink.target.id === realLink.source.id){
@@ -284,9 +285,12 @@ export class KnowledgeSpacesViewComponent implements OnInit {
               updated = true
               return
             }
+            else if((expectedLink.source.id === realLink.source.id && expectedLink.target.id === realLink.target.id)){
+              ok = true;
+            }
           }
         )
-        if(!updated){
+        if(!updated && !ok){
           this.resultsDelete.push({op: 'Delete', src: expectedLink.source.id, trg: expectedLink.target.id})
         }
       }
