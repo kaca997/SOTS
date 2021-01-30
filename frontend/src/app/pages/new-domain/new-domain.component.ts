@@ -71,13 +71,13 @@ export class NewDomainComponent implements OnInit {
   }
 
   saveDomen(){
-    console.log(this.links)
+    console.log(this.child.links)
     let domain : any = {}
     domain.domainName = this.domainForm.value.domainName;
     domain.courseId = +this.domainForm.value.courseName;
     domain.problemList = this.nodes.map(node => node.id);
     let relations = [] 
-    this.links.forEach(link =>{
+    this.child.links.forEach(link =>{
       let relation : any ={}
       relation.surmiseFrom = link.source.id;
       relation.surmiseTo = link.target.id;

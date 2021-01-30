@@ -3,9 +3,10 @@ INSERT INTO `authorities` VALUES (1,'ROLE_STUDENT'),(2,'ROLE_TEACHER');
 INSERT INTO `user` VALUES ('Student',1,'Pera','Peric','$2a$10$ygBCftE2h6/2D0Eo7zsNGumJuFgcIJeXSK3lVBYoTmLTFm4hwqUAW','student','12345678'),
 ('Teacher',2,'Mara','Maric','$2a$10$7xQWygfQbTs5xnMBVZIOrenFVFHySZ5TjH7GuWh8ywYdxYjceGQgK','teacher',NULL),
 ('Student',3,'Jovan','Jovic','$2a$10$ygBCftE2h6/2D0Eo7zsNGumJuFgcIJeXSK3lVBYoTmLTFm4hwqUAW','student1','12345678'),
-('Student',4,'Pera','Jovic','$2a$10$ygBCftE2h6/2D0Eo7zsNGumJuFgcIJeXSK3lVBYoTmLTFm4hwqUAW','student2','12345678');
+('Student',4,'Pera','Jovic','$2a$10$ygBCftE2h6/2D0Eo7zsNGumJuFgcIJeXSK3lVBYoTmLTFm4hwqUAW','student2','12345678'),
+('Student',5,'Pera','Jovic','$2a$10$ygBCftE2h6/2D0Eo7zsNGumJuFgcIJeXSK3lVBYoTmLTFm4hwqUAW','student3','12345678');
 
-INSERT INTO `user_authority` VALUES (1,1),(2,2), (3,1), (4,1);
+INSERT INTO `user_authority` VALUES (1,1),(2,2), (3,1), (4,1), (5,1);
 
 INSERT INTO `domain` VALUES (1, 'Domen - matematika');
 INSERT INTO `knowledge_space` VALUES (1, 'EXPECTED', 1);
@@ -14,7 +15,7 @@ INSERT INTO `relation` VALUES (1, 1 , 2, 1), (2, 1 , 3, 1), (3, 2 , 3, 1), (4, 2
 
 INSERT INTO `course` VALUES (1,'Matematika', 1),(2,'Istorija', null),(3,'Fizika', null),(4,'Hemija', null);
 
-INSERT INTO `student_course` VALUES (1,1),(1,2),(1,3),(3,1),(3,2),(3,3),(4,1),(4,2),(4,3);
+INSERT INTO `student_course` VALUES (1,1),(1,2),(1,3),(3,1),(3,2),(3,3),(4,1),(4,2),(4,3),(5,1);
 
 INSERT INTO `teacher_course` VALUES (2,1),(2,2),(2,3),(2,4);
 
