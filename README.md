@@ -46,3 +46,8 @@ odgovarajućim kredencijalima sadržanim u *application.properties* fajlu. Potre
 
 #### Frontend
 Za implementaciju klijentskog dela aplikacije koristi se *Angular* razvojno okruženje. Pre pokretanja potrebno je instalirati pakete. Treba se pozicionirati unutar *frontend* foldera u komendnoj liniji i zatim uneti komandu ```npm install```. Potom se aplikacija pokreće pomoću komande ```npm start``` i aplikaciji se pristupa iz veb pretraživača na adresi http://localhost:4200.
+
+## TIM
+Tim čine:
+- Nikolina Batinić, R2 14-2020
+- Katarina Aleksić, R2 12-2020
